@@ -20,6 +20,10 @@ import {
   Card,
   Avatar,
   Pagination,
+  Menu,
+  Submenu,
+  MenuItem,
+  MenuItemGroup,
   Image,
   Form,
   FormItem,
@@ -31,12 +35,20 @@ import {
   DropdownMenu,
   DropdownItem,
   Slider,
-  Upload
+  Upload,
+  Badge,
+  Tag
 } from 'element-ui';
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Card);
 Vue.use(Upload);
+Vue.use(Badge);
+Vue.use(Tag);
+Vue.use(Menu);
+Vue.use(Submenu);
+Vue.use(MenuItem);
+Vue.use(MenuItemGroup);
 Vue.use(Avatar);
 Vue.use(Pagination);
 Vue.use(Image);

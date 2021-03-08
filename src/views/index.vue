@@ -1,6 +1,6 @@
 <template>
   <div id="index">
-    <Header/>
+    <Header v-if="!$route.path.includes('admin')"/>
     <div v-show="!TypeChange" class="moon"></div>
     <div v-show="TypeChange"  class="night"></div>
     <Light @changeBackground="changeBG"/>
@@ -78,7 +78,7 @@ body,html {
   .router_content {
     animation: animate 2s;
   }
-  .active,
+  // .active,
   .current {
     position: sticky;
     background: linear-gradient(#333, #456);

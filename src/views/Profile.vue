@@ -65,23 +65,23 @@ export default {
         },
         // 确认是否退出登录
         open() {
-        this.$confirm('确定要退出登陆吗？(✿◕‿◕✿)', '退出登录提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(() => {
-          localStorage.clear()
-          this.MyInfo = {}
-          location.reload()
-          this.$message({
-            type: 'success',
-            message: '退出成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'success',
-            message: '不想退出可以多看看噢！(●ˇ∀ˇ●)'
-          });          
-        });
+            this.$confirm('确定要退出登陆吗？(✿◕‿◕✿)', '退出登录提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            }).then(() => {
+            localStorage.clear()
+            this.MyInfo = {}
+            location.reload()
+            this.$message({
+                type: 'success',
+                message: '退出成功!'
+            });
+            }).catch(() => {
+            this.$message({
+                type: 'success',
+                message: '不想退出可以多看看噢！(●ˇ∀ˇ●)'
+            });          
+            });
         },
         // 打开编辑框
         updateInfo() {

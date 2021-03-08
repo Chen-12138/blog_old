@@ -65,13 +65,13 @@ export const getSearch = (value) => post('/note/like_article_search/', {value})
 export const getLableInfo = (lable) => post('/note/getlableInfo', {lable})
 
 /**
- * @method 根据标签获取文章
- * @param  lable
+ * @method 根据分类获取文章
+ * @param  catogroy
  */
-export const getCategoryInfo = (catogroy) => post('/note/getManycategroys', {catogroy})
+export const getCategorynIfo = (categroy) => post('/note/getManycategroys', {categroy})
 
 /**
- * @method 根据标签获取文章
+ * @method 点赞
  * @param  lable
  */
 export const getLike = (params) => post('/note/getManycategroys', params)
@@ -101,3 +101,9 @@ export const publish = (publishURL,params) => post(publishURL, params)
  * @param  params 参数对象
  */
 export const reply = (replyURL,params) => post(replyURL, params)
+
+/**
+ * @method 获取文章详情
+ * @param  id
+ */
+export const getDetail = (id) => get(`/note/bynotetext/${id}`, {})

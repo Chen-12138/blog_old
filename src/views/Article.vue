@@ -21,14 +21,11 @@ export default {
     },
     data() {
         return {
-
+            
         }
     },
     mounted() {
-
-    },
-    methods: {
-      // 获取文章
+      
     },
 
 }

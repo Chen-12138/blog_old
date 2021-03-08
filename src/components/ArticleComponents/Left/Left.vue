@@ -3,35 +3,83 @@
     <el-card class="box-card">
         <div slot="header" class="clearfix">
             <span>文章列表</span>
-            <span style="float:right">共100篇</span>
+            <span style="float:right">共{{count}}篇</span>
         </div>
-        <div class="content">
-            <img src="@/assets/images/美女.jpg" alt="美女" class="img">
+        <div class="content" v-for="(item) in List" :key="item.id">
+            <div class="img">
+                <img :src="item.article_img" @click="detailPage(item.article_id)" alt="图片">
+            </div>   
             <div class="text">
-                <span class="title">标题</span>
-                <p class="desc">描述</p>
+                <span class="title">{{item.title}}</span>
+                <p class="desc">{{item.article_brief}}</p>
                 <div class="tag">
-                    <span>标签</span>
+                    <span>{{item.lable}}</span>
                 </div>
             </div>
         </div>
-        <div class="content">
-            <img src="@/assets/images/5.jpg" alt="美女" class="img">
-            <div class="text">
-                <span class="title">标题</span>
-                <p class="desc">描述</p>
-                <div class="tag">
-                    <span>标签</span>
-                </div>
-            </div>
+        <div class="paginationWrap">
+            <!-- <span>共 {{count}} 篇</span> -->
+            <el-pagination
+                class="pagination"
+                background
+                layout="total, prev, pager, next"
+                :page-size='pageSize'
+                @current-change='handlePageChange'
+                :total="count">
+            </el-pagination>
         </div>
+
     </el-card>
   </div>
 </template>
 
 <script>
+import eventBus from '../../../utils/eventBus'
 export default {
-
+    data() {
+        return {
+            // 总文章数
+            count: 0,
+            // 文章列表
+            List: [],
+            // 每页数量
+            pageSize: 3
+        }
+    },
+    mounted() {
+        this.PageChange(1)
+    },
+    beforeUpdate() {
+        // 这里的this是项目vue实例，用that接受，与eventBus的vue区分
+        const that = this
+        eventBus.$on('eventFromRight', function(val) {
+            that.List = val || []
+            that.count = val.length
+            that.pageSize = val.length
+        })
+    },
+    methods: {
+        // 跳转详情页
+        detailPage(article_id) {
+            this.$router.push(`/detail/${article_id}`)
+        },
+        // 换页的回调
+        handlePageChange(val) {
+            this.PageChange(val)
+        },
+        // 获取文章列表
+        async PageChange(index) {
+            try {
+                const res = await this.$api.getArticle(index)
+                if (res.err === 0) {
+                    this.List = res.message.data
+                    this.count = res.message.count
+                }
+            } catch (error) {
+                this.$message.error(error)
+            }
+        },
+    }
 }
 </script>
 
@@ -51,6 +99,16 @@ export default {
         .img{
             width:250px;
             margin-right: 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            // transition: all 1s;
+            :hover{
+                transition: all .3s;
+                position: relative;
+                top: -3px;
+                left: -1.5px;
+                box-shadow: 0px 5px 10px 3px #ccc;
+            }
             img{
                 width: 100%;
             }
@@ -69,4 +127,13 @@ export default {
     }
   }
 }
+.paginationWrap{
+    
+    .pagination{
+        float: right;
+        margin-bottom: 1rem;
+    }
+
+}
+
 </style>

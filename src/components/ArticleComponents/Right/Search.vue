@@ -1,13 +1,45 @@
 <template>
   <div id="search" class="shadow">
-      <input type="text">
-      <button >search</button>
+      <input v-model="searchValue" type="text">
+      <button @click="emitToLeft">search</button>
   </div>
 </template>
 
 <script>
+import eventBus from '../../../utils/eventBus'
 export default {
-
+    data() {
+        return {
+            searchValue: '',
+            searchList: []
+        }
+    },
+    methods: {
+        /* 防抖 */
+        async searchLike() {
+            if (!this.searchValue) return this.$message.error("搜索内容不能为空的呀~");
+            await this.search()
+        },
+        // 搜索方法
+        async search() {
+            try {
+                const res = await this.$api.getSearch(this.searchValue)
+                if (res.err === 0) {
+                    this.$message.success("为您搜索到左边的内容~")
+                    this.searchValue = ''
+                    this.searchList = res.message
+                } else {
+                    this.$message.error(res.message)
+                }
+            } catch (error) {
+                this.$message.error(error)
+            }
+        },
+        async emitToLeft() {
+            await this.searchLike()
+            eventBus.$emit('eventFromRight', this.searchList)
+        }
+    }
 }
 </script>
 

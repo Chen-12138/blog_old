@@ -2,8 +2,8 @@
  * 统一出口
  */
 import * as getApi from './api'
-// import * as getUserApi from './user'
+import * as adminApi from './admin'
 export default {
     ...getApi,
-    // ...getUserApi
+    ...adminApi
 }
