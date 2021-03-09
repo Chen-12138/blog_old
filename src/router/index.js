@@ -74,7 +74,7 @@ const routes = [
         component:() => import ('../admin/ImageUpload.vue')
       },
       {
-        path:'/admin/article/upload/articlePublish',
+        path:'/admin/article/upload/articlePublish/:id',
         name:'articlePublish',
         component:() => import ('../admin/articlePublish.vue')
       },
@@ -131,22 +131,22 @@ router.beforeEach(async (to,from,next) => {
   next()
 })
 // 以登陆状态
-router.beforeEach(async (to, from, next) => {
+/* router.beforeEach(async (to, from, next) => {
   if(to.path.includes("/admin/login")) {
     const res = await getApi.checkLogin()
     if (res.err === 0) {
-      router.push({ name: 'admin' })
+      router.push({ name: 'articleEditor' })
     } else {
       router.push({ name: 'adminlogin' })
     }
-    /* getnotedetail('/user/adminIslogined').then(res => {
+    getnotedetail('/user/adminIslogined').then(res => {
       if(res.data.err === 0) {
         router.push({ name:'admin'})
       } else {
         router.push({ name: 'adminlogin'})
       }
-    }) */
+    })
   }
   next()
-})
+}) */
 export default router

@@ -24,6 +24,8 @@ import {
   Submenu,
   MenuItem,
   MenuItemGroup,
+  Table,
+  TableColumn,
   Image,
   Form,
   FormItem,
@@ -49,6 +51,8 @@ Vue.use(Menu);
 Vue.use(Submenu);
 Vue.use(MenuItem);
 Vue.use(MenuItemGroup);
+Vue.use(Table);
+Vue.use(TableColumn);
 Vue.use(Avatar);
 Vue.use(Pagination);
 Vue.use(Image);

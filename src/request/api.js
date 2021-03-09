@@ -106,4 +106,4 @@ export const reply = (replyURL,params) => post(replyURL, params)
  * @method 获取文章详情
  * @param  id
  */
-export const getDetail = (id) => get(`/note/bynotetext/${id}`, {})
+export const getArticleInfo = (id) => get(`/note/bynotetext/${id}`, {})

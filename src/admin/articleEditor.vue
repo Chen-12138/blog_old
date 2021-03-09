@@ -1,8 +1,8 @@
 <template>
   <div class="articleEditor">
       <div class="navgation">
-          <el-row class="tac" style="height:100%">
-            <el-col :span="3" style="height:100%;background:#545c64">
+          <el-row style="height:100%">
+            <el-col :span="10" style="height:100%;background:#545c64;width:100%">
                 <el-menu
                 default-active="2"
                 class="el-menu-vertical-demo"
@@ -16,8 +16,8 @@
                     <i class="el-icon-location"></i>
                     <span>内容管理</span>
                     </template>
-                    <el-menu-item @click.native="$router.push('/admin/article/upload/articleManage')" index="1-1">文章发表</el-menu-item>
-                    <el-menu-item @click.native="$router.push('/admin/article/upload/articlePublish')" index="1-2">文章管理</el-menu-item>
+                    <el-menu-item @click.native="$router.push('/admin/article/upload/articlePublish')" index="1-1">文章发表</el-menu-item>
+                    <el-menu-item @click.native="$router.push('/admin/article/upload/articleManage')" index="1-2">文章管理</el-menu-item>
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title">
@@ -29,7 +29,7 @@
                 <el-submenu index="3">
                     <template slot="title">
                     <i class="el-icon-menu"></i>
-                    <span slot="title">用户管理</span>
+                    <span slot="title">其他内容</span>
                     </template>
                     <el-menu-item @click.native="$router.push('/admin/article/upload/photos')" index="3-1">上传相册</el-menu-item>
                     <el-menu-item @click.native="$router.push('/admin/article/upload/images')" index="3-2">上传图片</el-menu-item>
@@ -41,18 +41,17 @@
                 </el-menu-item>
                 </el-menu>
             </el-col>
-            <el-col :span="19" class="childrenRouter">
-                <div >
-                    <router-view/>
-                </div>
-            </el-col>
         </el-row>
+      </div>
+      <div class="childrenRouter">
+          <router-view/>
       </div>
   </div>
 </template>
 
 <script>
 export default {
+    name: 'articleEditor',
     data() {
         return {
 
@@ -86,21 +85,22 @@ export default {
 <style lang='scss' scoped>
 .articleEditor {
     width: 100vw;
-    height: 1080px;
+    height: 100vh;
     display: flex;
-    flex-direction: row;
-    .navgation {
+    .navigation {
         width: 100%;
-        height: 100%;
+        display: flex;
+        padding-right: 100px;
         position: fixed;
         top: 0;
-        z-index: 99;
+        left: 0;
     }
+    // flex-direction: row;
     .childrenRouter {
         flex: 1;
         z-index: 99;
         width: calc(100%-260px);
-        margin-left: 260px;
+        // margin-left: 260px;
         padding-left: 50px;
     }
 }
