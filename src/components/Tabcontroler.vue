@@ -1,39 +1,19 @@
 <template>
       <div :class="{show:$store.state.isShow}" class="MenuTab">
-              <div class="profile">
-                <img width="100" height="100" src="../assets/images/swiper1.jpeg" alt="">
-                <div class="profile">Codelei</div>
-            </div>
-      <List style="padding-left:1.5rem;">
-            <ListItem>
-              <i class="iconfont icon-qq">: 755425595,</i>
-              <i class="iconfont icon-weixin">: x972761675</i>
-              </ListItem>
-            <ListItem>
-              <i @click="$router.push('/home')" class="iconfont icon-shouyex"> 首页</i>
-            </ListItem>
-            <ListItem>
-              <i @click="$router.push('/demo')" class="iconfont icon--"> Demo</i>
-            </ListItem>
-            <ListItem>
-              <i @click="$router.push('/photos')" class="iconfont icon-biaoti"> 云相册</i>
-            </ListItem>
-            <ListItem>
-              <i @click="$router.push('/message')" class="iconfont icon-liuyan2"> 留言板</i>
-            </ListItem>
-          <ListItem>
-          <i @click="Gogithub"><Icon style="margin-left:0" type="logo-github"/> Github</i>
-          </ListItem>
-            <ListItem>
-              <i @click="$router.push('/article')" class="iconfont icon-wenzhang"> 文章列表</i>
-            </ListItem>
-            <ListItem>
-              <i @click="$router.push('/profile')" class="iconfont icon-touxiang"> 个人信息</i>
-              </ListItem>
-            <ListItem>
-              <i @click="skip" class="iconfont icon-denglu"> 登陆 / 注册</i>
-            </ListItem>
-        </List>
+        <div class="profile">
+            <img width="100" height="100" src="../assets/images/xiaomai.jpg" alt="">
+            <div class="profile">Heartless</div>
+        </div>
+        <ul class="nav">
+          <li><router-link :to="{ name: 'home' }" tag="a">首页</router-link></li>
+          <li><router-link :to="{ name: 'Demo' }" tag="a">Demo</router-link></li>
+          <li><router-link :to="{ name: 'photos' }" tag="a">云相册</router-link></li>
+          <li><router-link :to="{ name: 'message' }" tag="a">留言板</router-link></li>
+          <li><router-link :to="{ name: 'article' }" tag="a">文章列表</router-link></li>
+          <li><router-link :to="{ name: 'profile' }" tag="a">个人信息</router-link></li>
+          <li><router-link :to="{ name: 'login' }" tag="a">登录/注册</router-link></li>
+          <li><router-link :to="{ name: 'home' }" tag="a">Github</router-link></li>
+        </ul>
      </div>
 </template>
 <script>
@@ -64,7 +44,8 @@
     .MenuTab {
       width:23rem;
       height: 100vh;
-      background: url('../assets/images/wetherSon.jpg') no-repeat center;
+      // background: url('../assets/images/wetherSon.jpg') no-repeat center;
+      background-color: blanchedalmond;
       background-size: cover;
       position: fixed;
       left: -35rem;
@@ -72,14 +53,24 @@
       z-index: 998;
       border-right: 1px solid lightblue;
       transition: all .5s ease-in-out;
-      .ivu-list-item {
-        border-bottom: 0;
-      }
       i,span{
         font-size: 1.2rem;
         font-style:normal;
         margin-left: 1rem;
         color: rgb(255, 0, 106);
+      }
+      .nav{
+        li{
+          display: flex;
+          align-items: center;
+          padding-left: 2rem;
+          height: 60px;
+          a{
+            font-size: 16px;
+            text-decoration: none;
+            color: #fff;
+          }
+        }
       }
       @media screen and (min-width:992px) {
         i,span{

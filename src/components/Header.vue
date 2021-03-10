@@ -1,10 +1,10 @@
 <template>
   <div id="Header" class="shadow">
     <el-row class="row">
-      <el-col :xs="24" :sm="24" :md="24" :lg="4" :xl="6">
+      <el-col :xs="24" :sm="24" :md="24" :lg="14" :xl="2">
         <LogoContent/>
       </el-col>
-      <el-col :xs="0" :sm="20">
+      <el-col :xs="0" :sm="10">
         <TabbarLink/>
       </el-col>
     </el-row>
@@ -45,5 +45,9 @@ export default {
   border-bottom: 1px solid #f3f3f3;
   // background-color: #161616;
   // margin-bottom: 20px;
+  .row{
+    display: flex;
+    justify-content: space-between;
+  }
 }
 </style>

@@ -7,7 +7,7 @@ import { get, post } from './http'
  * @param  code 验证码
  * @param  emial 邮箱
  */ 
-export const Login = (params) => post('/user/login', params)
+export const userLogin = (params) => post('/user/login', params)
 
 /**
  * @method 发送邮箱接口
@@ -74,7 +74,7 @@ export const getCategorynIfo = (categroy) => post('/note/getManycategroys', {cat
  * @method 点赞
  * @param  lable
  */
-export const getLike = (params) => post('/note/getManycategroys', params)
+export const getLike = (params) => post('/note/notelike', params)
 
 /**
  * @method 获取图片

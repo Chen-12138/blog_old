@@ -7,12 +7,14 @@
     <keep-alive>
       <router-view :class="{router_content: $route.name !== 'home'}"/>
     </keep-alive>
+    <TabControler/>
   </div>
 </template>
 
 <script>
 import Header from '../components/Header'
 import Light from '../components/highlight/light'
+import TabControler from '../components/Tabcontroler'
 export default {
   data() {
     return {
@@ -47,7 +49,8 @@ export default {
   },
   components:{
     Header,
-    Light
+    Light,
+    TabControler
   }
 
 }

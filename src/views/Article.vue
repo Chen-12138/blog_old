@@ -1,10 +1,10 @@
 <template>
   <div id="Article">
-    <el-row :gutter="20">
-        <el-col :xs="24" :sm={span:13,offset:3}>
+    <el-row :gutter="20" style="width:100%">
+        <el-col :xs="24" :sm={span:12,offset:3}>
             <Left/>
         </el-col>
-        <el-col :xs="0" :sm="6">
+        <el-col :xs="0" :sm="5">
             <Right/>
         </el-col>
     </el-row>
@@ -32,6 +32,12 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+@media screen and (max-width: 768px) {
+  #Article{
+    width: 100vw;
+    overflow: hidden;
+  }
+}
   .el-col {
     border-radius: 4px;
   }

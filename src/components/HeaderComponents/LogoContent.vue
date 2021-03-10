@@ -1,10 +1,10 @@
 <template>
   <div id="logocontent">
     <div class="logo_name">
-      <i class="menu iconfont icon-caidan"></i>
+      <i class="menu iconfont icon-caidan" style="color:black"></i>
       <!-- <img v-show="$route.name !== 'home'" src="../../assets/images/logo.jpg" alt /> -->
       <p v-show="$route.name !== 'home'">Heartless</p>
-      <i @click="$router.push('/category')" class="search iconfont icon-sousuo"></i>
+      <i @click="$router.push('/category')" class="search iconfont icon-sousuo" style="color:black"></i>
     </div>
   </div>
 </template>
@@ -52,6 +52,7 @@ export default {
   @media screen and(max-width:992px) {
     .menu,
     .search {
+      color: black;
       display: block !important;
     }
   }

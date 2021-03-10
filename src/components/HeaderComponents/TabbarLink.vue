@@ -1,7 +1,7 @@
 <template>
   <div id="tabbarLink">
     <a v-for="(item, index) in LinkList" :key="index" @click="triggerPage(item.path)" ref="navigators">
-      <!-- <Icon :type="item.imageURL" /> --> {{item.name}}
+      {{item.name}}
     </a>
   </div>
 </template>
@@ -10,11 +10,11 @@
     name:'tablink',
     data () {
       return {
-          LinkList:[{name:"首页",imageURL:"md-home",path:'/'},{name:"文章列表",imageURL:'ios-bookmarks-outline',path:'/article'},
-                    {name:"Demo",imageURL:"logo-youtube",path:'/demo'},{name:"云相册",imageURL:'md-images',path:'/photos'},
-                    {name:"个人信息",imageURL:'md-person',path:'/profile'},{name:"留言板",imageURL:'ios-create',path:'/message'},
-                    {name:"GitHub",imageURL:'logo-github',path:'https://github.com/Chen-12138'},
-                    {name:"登陆 / 注册",imageURL:"md-contact",path:'/login'}
+          LinkList:[{name:"首页",path:'/'},{name:"文章列表",path:'/article'},
+                    {name:"Demo",path:'/demo'},{name:"云相册",path:'/photos'},
+                    {name:"个人信息",path:'/profile'},{name:"留言板",path:'/message'},
+                    {name:"GitHub",path:'https://github.com/Chen-12138'},
+                    {name:"登陆 / 注册",path:'/login'}
           ]
       };
     },
@@ -31,7 +31,7 @@
               this.$router.push('/logined')
               return
             }
-          } else if(path == 'https://github.com/Acmenlei') {
+          } else if(path == 'https://github.com/Chen-12138') {
             return window.open(path)
           }
           this.$router.push(path)
@@ -49,6 +49,7 @@
   height: 50px;
   justify-content: center;
   align-items: center;
+  flex-wrap: nowrap;
   // line-height: 50px;
   a {
     font-family: '微软雅黑';

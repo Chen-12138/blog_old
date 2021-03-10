@@ -25,7 +25,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-/* @media screen and (max-width:1200px) {
+@media screen and (max-width:1200px) {
     body,html {
       font-size:15px ;
     }
@@ -49,5 +49,5 @@ export default {
     body,html {
       font-size:11px ;
     }
-} */
+}
 </style>
