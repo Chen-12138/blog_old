@@ -2,7 +2,7 @@
   <div id="left" class="shadow">
     <el-card class="box-card">
         <div slot="header" class="clearfix">
-            <span>文章列表</span>
+            <span><i class="iconfont icon-wenzhang"></i>文章列表</span>
             <span style="float:right">共{{count}}篇</span>
         </div>
         <div class="content" v-for="(item) in List" :key="item.id">

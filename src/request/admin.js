@@ -40,3 +40,28 @@ export const articleUpdate = (params) => post('/note/editorArticle', params)
  * @param  id
  */
 export const getDetail = (id) => get(`/note/getArticleInfo/${id}`, {})
+
+/**
+ * @method 发表图片说说
+ * @param  contents
+ * @param  imgsrc
+ */
+export const sendPhoto = (params) => post('/upload/talkokSend', params)
+
+/**
+ * @method 发表Demo
+ * @param  一个对象
+ */
+export const sendDemo = (params) => post('/upload/uploadDemo', params)
+
+/**
+ * @method 获取用户列表
+ * @param  无
+ */
+export const getUser = () => get('/user/getUserInfo', {})
+
+/**
+ * @method 删除用户
+ * @param  username 用户名
+ */
+export const deleteUser = (username) => post('/user/deleteUserInfo', {username})

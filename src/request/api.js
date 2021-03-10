@@ -107,3 +107,8 @@ export const reply = (replyURL,params) => post(replyURL, params)
  * @param  id
  */
 export const getArticleInfo = (id) => get(`/note/bynotetext/${id}`, {})
+
+/**
+ * @method 获取Demo
+ */
+export const getDemo = (page) => get(`/note/getdemolist?page=${page}`, {})

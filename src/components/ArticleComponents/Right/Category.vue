@@ -1,7 +1,7 @@
 <template>
 <el-card class="box-card">
   <div slot="header" class="clearfix">
-    <span>文章分类</span>
+    <span><i class="iconfont icon-fenlei"></i> 文章分类</span>
     <el-button style="float: right; padding: 3px 0" type="text">more</el-button>
   </div>
   <div class="wrap">

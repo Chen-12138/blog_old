@@ -49,6 +49,11 @@ const routes = [
     component:() => import('../views/LeaveMessage.vue')
   },
   {
+    path:'/demo',
+    name:'demo',
+    component:() => import('../views/Demo.vue')
+  },
+  {
     path:'/admin/login',
     name:'adminlogin',
     component:() => import ('../admin/adminLogin.vue')
@@ -74,7 +79,7 @@ const routes = [
         component:() => import ('../admin/ImageUpload.vue')
       },
       {
-        path:'/admin/article/upload/articlePublish/:id',
+        path:'/admin/article/upload/articlePublish',
         name:'articlePublish',
         component:() => import ('../admin/articlePublish.vue')
       },

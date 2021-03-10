@@ -69,7 +69,12 @@ export default {
     methods: {
       handleEdit(index, row) {
         // console.log(index, row);
-        this.$router.push('/admin/article/upload/articlePublish/' + row.article_id)
+        this.$router.push({
+          name: 'articlePublish',
+          query: {
+            article_id: row.article_id
+          }
+        })
       },
       handleDelete(index, row) {
         console.log(index, row);

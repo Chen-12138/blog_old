@@ -1,7 +1,7 @@
 <template>
 <el-card class="box-card">
   <div slot="header" class="clearfix">
-    <span>最近文章</span>
+    <span><i class="iconfont icon-wenzhang"></i> 最近文章</span>
     <el-button style="float: right; padding: 3px 0" type="text">more</el-button>
   </div>
   <div

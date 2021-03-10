@@ -1,18 +1,18 @@
 <template>
   <div class="articleEditor">
-      <div class="navgation">
+      <div class="navigation">
           <el-row style="height:100%">
-            <el-col :span="10" style="height:100%;background:#545c64;width:100%">
+            <el-col :span="12" style="height:100%;width:260px;background:#515a6e">
                 <el-menu
-                default-active="2"
+                :default-active="openIndex"
                 class="el-menu-vertical-demo"
-                background-color="#545c64"
-                text-color="#fff"
-                active-text-color="#ffd04b"
+                background-color="#515a6e"
+                text-color="#cbced4"
+                active-text-color="#fff"
                 :default-openeds="['1','2','3']"
                 >
                 <el-submenu index="1">
-                    <template slot="title">
+                    <template slot="title" style="background:#515a6e">
                     <i class="el-icon-location"></i>
                     <span>内容管理</span>
                     </template>
@@ -32,7 +32,7 @@
                     <span slot="title">其他内容</span>
                     </template>
                     <el-menu-item @click.native="$router.push('/admin/article/upload/photos')" index="3-1">上传相册</el-menu-item>
-                    <el-menu-item @click.native="$router.push('/admin/article/upload/images')" index="3-2">上传图片</el-menu-item>
+                    <!-- <el-menu-item @click.native="$router.push('/admin/article/upload/images')" index="3-2">上传图片</el-menu-item> -->
                     <el-menu-item @click.native="$router.push('/admin/article/upload/demo')" index="3-3">发表demo</el-menu-item>
                 </el-submenu>
                 <el-menu-item index="4">
@@ -54,11 +54,22 @@ export default {
     name: 'articleEditor',
     data() {
         return {
-
+            List: {
+                '/admin/article/upload/articlePublish' : '1-1',
+                '/admin/article/upload/articleManage' : '1-2',
+                '/admin/article/upload/users' : '2-1',
+                '/admin/article/upload/photos' : '3-1',
+                '/admin/article/upload/demo' : '3-3'
+            },
+            openIndex: ''
         }
     },
+    mounted() {
+        // console.log(this.$route)
+        const path = this.$route.path
+        this.openIndex = this.List[path]
+    },
     methods: {
-      
       exitSys() {
         this.$confirm('确定要退出登陆吗？(✿◕‿◕✿)', '退出登录提示', {
             confirmButtonText: '确定',
@@ -82,15 +93,17 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 .articleEditor {
     width: 100vw;
     height: 100vh;
     display: flex;
+    position: relative;
     .navigation {
         width: 100%;
+        height: 100%;
         display: flex;
-        padding-right: 100px;
+        // padding-right: 100px;
         position: fixed;
         top: 0;
         left: 0;
@@ -100,8 +113,17 @@ export default {
         flex: 1;
         z-index: 99;
         width: calc(100%-260px);
-        // margin-left: 260px;
+        margin-left: 240px;
         padding-left: 50px;
     }
+}
+.el-submenu .el-menu-item{
+    background-color: #363e4f !important;
+}
+.el-menu-item.is-active {
+    background-color: #2d8cf0 !important;
+}
+.el-menu-item:hover {
+    color: #fff !important;
 }
 </style>
