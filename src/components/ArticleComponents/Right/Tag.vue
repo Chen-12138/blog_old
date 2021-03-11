@@ -6,7 +6,7 @@
   </div>
   <div class="wrap">
     <div v-for="(item, index) in tagList" :key="index" style="margin-right:1rem">
-      <el-tag class="tag" @click="emitToLeft(item.lable)">{{item.lable}}</el-tag>
+      <el-tag class="tag" @click="emitToLeft(item)">{{item}}</el-tag>
     </div>
   </div>
 </el-card>

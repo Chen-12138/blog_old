@@ -1,6 +1,13 @@
 <template>
-  <div id="left" class="shadow">
-    <el-card class="box-card">
+  <div id="category">
+      <h2>~点击已存在的标签搜索对应的内容</h2>
+      <div class="lables">
+        <div v-for="(item, index) in tagList" :key="index" style="margin-right:1rem; margin-bottom:.8rem; margin-left:1rem">
+            <el-tag class="tag" @click="getArticle(item)">{{item}}</el-tag>
+        </div>
+      </div>
+      <h3>以下为搜索结果~~~</h3>
+      <el-card class="box-card">
         <div slot="header" class="clearfix">
             <span><i class="iconfont icon-wenzhang"></i>文章列表</span>
             <span style="float:right">共{{count}}篇</span>
@@ -33,106 +40,57 @@
             </div>
         </div>
         <div class="paginationWrap">
-            <!-- <span>共 {{count}} 篇</span> -->
-            <el-pagination
-                class="pagination"
-                background
-                layout="total, prev, pager, next"
-                :page-size='pageSize'
-                @current-change='handlePageChange'
-                :total="count">
-            </el-pagination>
         </div>
-
     </el-card>
   </div>
 </template>
 
 <script>
-import eventBus from '../../../utils/eventBus'
 export default {
-    data() {
+    name: 'category',
+    data () {
         return {
+            tagList: [],
             // 总文章数
             count: 0,
             // 文章列表
             List: [],
-            // 每页数量
-            pageSize: 3,
-            // 点赞数量数组
-            likes: []
         }
     },
     mounted() {
-        this.PageChange(1)
-    },
-    beforeUpdate() {
-        // 这里的this是项目vue实例，用that接受，与eventBus的vue区分
-        const that = this
-        eventBus.$on('eventFromRight', function(val) {
-            that.List = val || []
-            that.count = val.length
-            that.pageSize = val.length
-        })
+        this.getTags()
     },
     methods: {
-        // 跳转详情页
-        detailPage(article_id) {
-            this.$router.push(`/detail/${article_id}`)
-        },
-        // 换页的回调
-        handlePageChange(val) {
-            this.PageChange(val)
-        },
-        // 获取文章列表
-        async PageChange(index) {
+        // 获取文章标签
+        async getTags() {
             try {
-                this.$store.commit('LoadingTitleChange', {isShow: true, title: '正在加载文章内容,请稍等...'})
-                const res = await this.$api.getArticle(index)
-                if (res.err === 0) {
-                    this.List = res.message.data
-                    this.count = res.message.count
-                    this.List.map((item) => {
-                        this.likes.push(item.like_Star)
-                    })
-                } else {
-                    this.$message.error('网络出错了,(ノへ￣、)！')
-                }
-                this.$store.commit('LoadingTitleChange', {isShow: false, title: ''})
+                const res = await this.$api.getLable()
+            if (res.err === 0) {
+                let arr = []
+                res.message.forEach(element => {
+                    arr.push(element.lable)
+                });
+                this.tagList = new Set(arr)
+            } else {
+                this.$message.error(res.message)
+            }
             } catch (error) {
                 this.$message.error(error)
             }
         },
-        // 点赞
-        async changeLike(like_Star, id, index) {
+        async getArticle(item) {
             try {
-                if (localStorage.getItem('username')) {
-                    if (localStorage.getItem(`like${id}`)) {
-                        this.$message.error("你已经为这篇文章点过赞了噢~o(*￣▽￣*)o")
-                    } else {
-                        localStorage.setItem(`like${id}`, id)
-                        this.List.forEach(async (item) => {
-                            if(item.id == id) {
-                                item.like_Star +=1;
-                                const res = await this.$api.getLike({
-                                    likestar: item.like_Star,
-                                    id: id
-                                })
-                                if (res.err === 0) {
-                                    this.$message.success("你为这篇文章增加了一个star谢谢你的支持鸭！(●ˇ∀ˇ●)")
-                                } else {
-                                    this.$message.error("网络好像有点差劲呢！小主稍后再来咱们不急！(ノへ￣、)")
-                                }
-                            }
-                        })
-                    }
+                const res = await this.$api.getLableInfo(item)
+                if (res.err == 0) {
+                    this.$message.success('为您找到一下内容喔~');
+                    this.List = res.message
+                    this.count = res.message.length
                 } else {
-                    this.$message.error("请先去登陆再来点赞噢小主！(ノへ￣、)")
+                    this.$message.error('您的网络不太好呢，请刷新后重试~')
                 }
             } catch (error) {
                 this.$message.error(error)
             }
-            
         }
     },
     filters:{
@@ -143,10 +101,26 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
-#left{
+<style lang='scss'>
+#category {
     width: 100%;
-  .box-card {
+    margin: 0 auto;
+    h2 {
+        text-align: center;
+        padding: 2rem;
+        font-size: 20px;
+    }
+    .lables{
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0 2rem;
+      margin-bottom: 1.5rem;
+    }
+    h3 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+      .box-card {
     width: 100%;
     margin: 2rem 0;
     .content{
@@ -235,18 +209,9 @@ export default {
   }
 }
 @media screen and (max-width: 768px) {
-    #left{
-        width: 100%;
-        margin: 1rem;
+    #category{
+        width: 95%;
+        margin: 0 auto;
     }
 }
-.paginationWrap{
-    
-    .pagination{
-        float: right;
-        margin-bottom: 1rem;
-    }
-
-}
-
 </style>

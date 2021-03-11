@@ -73,7 +73,7 @@ export default {
             const res = await this.$api.getDetail(this.$route.params.id)
             console.log(res)
             if (res.err === 0) {
-                this.detail =  res.message.content[0]
+                this.detail =  res.message[0]
                 this.messageList = res.message.data
                 this.title = this.detail.title
             }
@@ -112,6 +112,19 @@ export default {
             min-height: 180px;
             margin-bottom: 40px;
             padding: 2rem;
+        }
+    }
+}
+@media screen and(max-width:992px) {
+    #detail{
+        .detail_header{
+            height: 10rem;
+        }
+        .content{
+            padding: 0 1rem;
+            .article-box{
+                padding: 1rem;
+            }
         }
     }
 }

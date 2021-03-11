@@ -2,11 +2,11 @@
 <el-card class="box-card">
   <div slot="header" class="clearfix">
     <span><i class="iconfont icon-wenzhang"></i> 最近文章</span>
-    <el-button style="float: right; padding: 3px 0" type="text">more</el-button>
+    <el-button style="float: right; padding: 3px 0" type="text" @click="more">more</el-button>
   </div>
   <div
     class="ItemList"
-    v-for="(item, index) in recentList"
+    v-for="(item, index) in showList"
     @click="timeArticle(item.article_id)"
     :key="index"
     :title="item.title"
@@ -36,7 +36,7 @@ export default {
     },
     data() {
       return {
-
+        showList: []
       }
     },
     filters: {
@@ -44,13 +44,29 @@ export default {
         return moment(V).format("YYYY-MM-DD");
       }
     },
+    mounted() {
+      setTimeout(()=>{
+        this.some()
+      },200)
+    },
+    methods: {
+      // 截取部分文章
+      some() {
+        // console.log(this.recentList)
+        var storeList = [...this.recentList];
+        this.showList = storeList.splice(0,6)
+      },
+      more() {
+        this.showList = this.recentList
+      }
+    }
 }
 </script>
 
 <style lang='scss'>
 .box-card {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     .ItemList {
       padding: 0.8rem 0.5rem;
       cursor: pointer;
@@ -63,7 +79,7 @@ export default {
       align-items: center;
       span {
         font-size: 14px;
-        color: purple;
+        color: black;
         font-weight: bold;
         white-space: nowrap;
       }

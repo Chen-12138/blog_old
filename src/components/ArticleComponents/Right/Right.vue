@@ -50,7 +50,11 @@ export default {
             try {
             const res = await this.$api.getLable()
             if (res.err === 0) {
-                this.tagList = res.message
+                let arr = []
+                res.message.forEach(element => {
+                    arr.push(element.lable)
+                });
+                this.tagList = Array.from(new Set(arr))
             } else {
                 this.$message.error(res.message)
             }

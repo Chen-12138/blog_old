@@ -1,7 +1,7 @@
 <template>
   <div id="Logined">
       <img src="../../assets/images/logined.gif" alt="你已经登陆过啦！">
-      <p>你已经登陆过了，如果需要可以先去退出登录！</p>
+      <p :style="{color: Color}">你已经登陆过了，如果需要可以先去退出登录！</p>
   </div>
 </template>
 <script>
@@ -11,7 +11,13 @@
     data () {
       return {
 
-      };}
+      };
+    },
+    computed: {
+      Color() {
+        return this.$store.state.Color
+      }
+    }
   }
 
 </script>
@@ -19,8 +25,16 @@
 #Logined {
     padding-top: 10rem;
     text-align: center;
-    p {
-      font-weight: bold;
+    img {
+      margin-bottom: 1rem;
     }
+    p {
+      // font-weight: bold;
+    }
+}
+@media screen and(max-width:992px) {
+  #Logined {
+    padding-top: 5rem;
+  }
 }
 </style>

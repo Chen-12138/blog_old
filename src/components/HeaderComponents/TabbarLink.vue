@@ -47,6 +47,7 @@
 #tabbarLink {
   display: flex;
   height: 50px;
+  white-space: nowrap;
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
@@ -56,13 +57,13 @@
     color: #d4d4d4;
     margin: 0 1rem;
     padding: .3rem;
-    font-size: 13px;
+    font-size: 1rem;
     transition: all .5s;
     cursor: pointer;
   }
   a:hover {
     background: #222;
-    border-radius: 2px;
+    border-radius: .1rem;
     color: white;
   }
 }

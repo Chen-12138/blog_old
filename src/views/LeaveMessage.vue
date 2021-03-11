@@ -47,6 +47,7 @@ export default {
         },
         async Pagechange(index) {
             /* 发起请求 */
+            this.$store.commit('LoadingTitleChange', {isShow: true, title: '正在获取留言信息~'})
             const res = await this.$api.getComment(index)
             if (res.err === 0) {
                 this.count = res.message.count
@@ -54,6 +55,7 @@ export default {
             } else {
                 this.$message.error("网络出错了,(ノへ￣、)！")
             }
+            this.$store.commit('LoadingTitleChange', {isshow: false, title: ''})
         }
     }
 

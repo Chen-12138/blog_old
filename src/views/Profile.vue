@@ -1,10 +1,11 @@
 <template>
   <div id="Info">
-      <div v-if="!username" style="text-align:center;padding-top:8rem;">
+      <div v-if="!username" style="text-align:center;padding-top:8rem;" :style="{color: Color}">
         糟糕，您还没有登陆检测不到信息! ~§(*￣▽￣*)§~
+        <p>如果已登录，刷新页面即可看到个人信息~</p>
       </div>
       <div v-if="username" class="SuccessInfo">
-          <h4 style="color:orange;margin-bottom:1rem;">下面这些就是您的个人信息啦(●ˇ∀ˇ●)~</h4>
+          <h4 style="color:orange;margin-bottom:1rem;" :style="{color: Color}">下面这些就是您的个人信息啦(●ˇ∀ˇ●)~</h4>
           <img :src="MyInfo.uploadimg" alt="这是头像啦啦啦~">
           <el-upload
             v-show="flag"
@@ -23,7 +24,7 @@
           <el-button class="editor_Info" @click="updateInfo" type="default">编辑信息</el-button>
           <el-button class="primary" v-show="flag" @click="submit" type="primary">提交</el-button>
           </p>
-          <p>温馨提示:如果点错了,再次点击编辑信息可以取消编辑哦(。・∀・)ノ</p>
+          <p :style="{color: Color}">温馨提示:如果点错了,再次点击编辑信息可以取消编辑哦(。・∀・)ノ</p>
       </div>
   </div>
 </template>
@@ -39,6 +40,11 @@ export default {
             flag: false,
             modal1:false,
             imageUrl: ''
+        }
+    },
+    computed: {
+        Color() {
+            return this.$store.state.Color;
         }
     },
     mounted() {

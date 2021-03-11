@@ -1,6 +1,6 @@
 <template>
   <div id="center">
-        <div class="wrapper">
+        <div class="wrapper" style="font-size:1.6rem">
             <div class="slash"></div>
             <div class="sides">
                 <div class="side"></div>
@@ -9,12 +9,12 @@
                 <div class="side"></div>
             </div>
             <div class="text">
-                <div class="text--backing">Heartless</div>
+                <div class="text--backing" style="font-size:1.6rem">Heartless</div>
                 <div class="text--left">
-                    <div class="inner">Heartless</div>
+                    <div class="inner" style="font-size:1.6rem">Heartless</div>
                 </div>
                 <div class="text--right">
-                    <div class="inner">Heartless</div>
+                    <div class="inner" style="font-size:1.6rem">Heartless</div>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
     </div>
     <div class="talk-method">
         <i class="iconfont icon-weixin"> : Lucky_Chen_12138</i>
-        <i class="iconfont icon-qq"> : 1482409829 || <i class="iconfont icon-qq"> 前端群</i>: 700785102</i>
+        <i class="iconfont icon-qq"> : 1482409829 <!-- || <i class="iconfont icon-qq"> 前端群</i>: 700785102 --></i>
     </div>
 </div>
 </template>
@@ -52,7 +52,7 @@
     },
     methods: {
         triggerPage(path) {
-            if(path === 'https://github.com/Acmenlei') {
+            if(path === 'https://github.com/Chen-12138') {
                 window.open(path)
             } else {
                 this.$router.push(path)
@@ -68,14 +68,20 @@
    justify-content: center;
    align-items: center;
    flex-direction: column;
+   .wrapper{
+       font-size: 1.2rem;
+   }
    .navgation,
    .talk-method {
+       display: flex;
+       flex-wrap: wrap;
+       justify-content: center;
        margin: 2rem 0;
        white-space: nowrap;
        i {
            color: white;
            margin: 0.3rem;
-           font-size: 0.9rem;
+           font-size: 1rem;
            transition: all 0.6s;
            cursor: pointer;
        }
@@ -159,6 +165,12 @@
     height: 100vh;
     background-color: #000;
     overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    #center {
+        width: 80%;
+    }
 }
 
 </style>

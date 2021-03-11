@@ -5,8 +5,9 @@
     <div v-show="TypeChange"  class="night"></div>
     <Light @changeBackground="changeBG"/>
     <keep-alive>
-      <router-view :class="{router_content: $route.name !== 'home'}"/>
+      <router-view class="router" :class="{router_content: $route.name !== 'home'}"/>
     </keep-alive>
+    <Loading class="LoadingStyle" v-show="$store.state.LoadingShow"/>
     <TabControler/>
   </div>
 </template>
@@ -15,6 +16,7 @@
 import Header from '../components/Header'
 import Light from '../components/highlight/light'
 import TabControler from '../components/Tabcontroler'
+import Loading from '../components/Loading/Loading'
 export default {
   data() {
     return {
@@ -50,7 +52,8 @@ export default {
   components:{
     Header,
     Light,
-    TabControler
+    TabControler,
+    Loading
   }
 
 }
@@ -64,6 +67,7 @@ body,html {
 #index {
   display: flex;
   flex-direction: column;
+  width: 100%;
   .moon,.night {
     width: 100%;
     height: 100%;
@@ -92,4 +96,5 @@ body,html {
     100% { opacity: 1; transform: translateY(0);}
   }
 }
+
 </style>

@@ -6,7 +6,7 @@
         </div>
         <ul class="nav">
           <li><router-link :to="{ name: 'home' }" tag="a">首页</router-link></li>
-          <li><router-link :to="{ name: 'Demo' }" tag="a">Demo</router-link></li>
+          <li><router-link :to="{ name: 'demo' }" tag="a">Demo</router-link></li>
           <li><router-link :to="{ name: 'photos' }" tag="a">云相册</router-link></li>
           <li><router-link :to="{ name: 'message' }" tag="a">留言板</router-link></li>
           <li><router-link :to="{ name: 'article' }" tag="a">文章列表</router-link></li>
@@ -42,16 +42,17 @@
 </script>
 <style lang="scss" scoped>
     .MenuTab {
-      width:23rem;
+      width:19rem;
       height: 100vh;
       // background: url('../assets/images/wetherSon.jpg') no-repeat center;
       background-color: blanchedalmond;
       background-size: cover;
       position: fixed;
       left: -35rem;
-      top: 3rem;
+      // top: 3rem;
       z-index: 998;
       border-right: 1px solid lightblue;
+      background-color: #2d8cf0;
       transition: all .5s ease-in-out;
       i,span{
         font-size: 1.2rem;
@@ -66,6 +67,8 @@
           padding-left: 2rem;
           height: 60px;
           a{
+            height: 100%;
+            width: 100%;
             font-size: 16px;
             text-decoration: none;
             color: #fff;
@@ -85,6 +88,7 @@
       }
       .profile{
         text-align: center;
+        margin-bottom: .5rem;
        div{
         text-align: center;
         color: white;
@@ -111,8 +115,8 @@
       left: 0;
       animation: borderFlex .9s;
     }
-    @keyframes borderFlex {
-      0%{ border-top-right-radius:500px;height: 0;}
-      100%{ border-top-right-radius:0;height: 100vh;}
-    }
+    // @keyframes borderFlex {
+    //   0%{ border-top-right-radius:500px;height: 0;}
+    //   100%{ border-top-right-radius:0;height: 100vh;}
+    // }
 </style>

@@ -5,18 +5,18 @@
               <source :src="item.video_path" type="video/mp4" />
           </video>
           <footer>
-              <p>{{item.content}}</p>
-              <span>{{item.datetime | dateFilter}}</span>
-              <el-button type="success" @click="CheckCode(item.code_path)">查看源码</el-button>
+              <p :style="{color: Color}">{{item.content}}</p>
+              <span :style="{color: Color}">{{item.datetime | dateFilter}}</span>
+              <el-button type="primary" @click="CheckCode(item.code_path)">查看源码</el-button>
           </footer>
       </div>
-      <el-pagination
+      <!-- <el-pagination
         background
         layout="prev, pager, next"
         :page-size="12"
         @current-change="handleChange"
         >
-      </el-pagination>
+      </el-pagination> -->
   </div>
 </template>
 
@@ -34,6 +34,11 @@ export default {
       dateFilter(val) {
          return moment(val).format('YYYY-MM-DD HH:mm:ss')
       }
+    },
+    computed: {
+      Color() {
+            return this.$store.state.Color;
+        }
     },
     mounted() {
         this.getDemo(1)
@@ -77,11 +82,11 @@ export default {
     margin: 1rem;
     // padding: 0.8rem;
     height: 22rem;
-    background: rgb(34, 34, 34,.8);
+    // background: rgb(34, 34, 34,.8);
     border-radius: 0.5rem;
     box-shadow:0 0 3px #333;
     position: relative;
-    color: #f2f2f2;
+    // color: black;
     #video {
       border-radius: 0.5rem;
       position: relative;
@@ -96,7 +101,8 @@ export default {
       flex-direction: column;
       padding: 0.4rem;
       p {
-        font-size: 12px;
+        font-size: 16px;
+        margin-bottom: 5px;
       }
       button {
         position: relative;
@@ -104,7 +110,8 @@ export default {
         flex:1;
       }
       span {
-        color:lightgreen;
+        // color:lightgreen;
+        margin-bottom: 10px;
       }
     }
   }
@@ -126,6 +133,11 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
+  }
+}
+@media screen and(max-width:992px) {
+  #demo{
+    padding: 1rem 0;
   }
 }
 </style>

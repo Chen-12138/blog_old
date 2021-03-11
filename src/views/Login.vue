@@ -8,7 +8,7 @@
       class="demo-ruleForm"
     >
       <el-form-item>
-        <div class="logintitle">欢迎加入Heartless的小家庭！</div>
+        <div class="logintitle" :style="{color: Color}">欢迎加入Heartless的小家庭！</div>
       </el-form-item>
       <el-form-item prop="user">
         <el-input v-model="ruleForm.user">
@@ -60,7 +60,7 @@
         >
       </el-form-item>
       <el-form-item>
-        <p style="font-size: 1rem">
+        <p style="font-size: 1rem" :style="{color: Color}">
           提示:
           没有账号可以点击我是新人进行注册,只需要验证邮箱就可以了,欢迎你的加入！
         </p>
@@ -123,6 +123,11 @@ export default {
       }, 1000);
     } else {
       clearInterval(this.timer);
+    }
+  },
+  computed: {
+    Color() {
+        return this.$store.state.Color;
     }
   },
   methods: {
@@ -267,6 +272,18 @@ export default {
   }
   .logintitle {
     font-size: 2rem;
+  }
+}
+@media screen and (max-width:992px) {
+  #login {
+    width: 95%;
+    margin-top: 2rem;
+    .demo-ruleForm {
+      width: 80%;
+    }
+    .logintitle {
+      font-size: 1.45rem;
+    }
   }
 }
 </style>

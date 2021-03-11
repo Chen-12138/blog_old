@@ -1,10 +1,10 @@
 <template>
   <div id="logocontent">
     <div class="logo_name">
-      <i class="menu iconfont icon-caidan" style="color:black"></i>
+      <i class="menu iconfont icon-caidan"></i>
       <!-- <img v-show="$route.name !== 'home'" src="../../assets/images/logo.jpg" alt /> -->
       <p v-show="$route.name !== 'home'">Heartless</p>
-      <i @click="$router.push('/category')" class="search iconfont icon-sousuo" style="color:black"></i>
+      <i @click="$router.push('/category')" class="search iconfont icon-sousuo"></i>
     </div>
   </div>
 </template>
@@ -19,8 +19,8 @@ export default {
   src: url("../../assets/font/Oh-Chewy-2.ttf");
 } */
 #logocontent {
-  height: 50px;
-  line-height: 50px;
+  height: 3.125rem;
+  line-height: 3.125rem;
   .logo_name {
     display: flex;
     justify-content: center;
@@ -29,7 +29,7 @@ export default {
     position: relative;
     user-select: none;
     p {
-      font-size: 1.2rem;
+      font-size: 1.6rem;
       // margin-bottom: 2rem;
       font-weight: bold;
       color: #d4d4d4;
@@ -59,11 +59,11 @@ export default {
   .menu,
   .search {
     position: absolute;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     cursor: pointer;
-    color: white;
+    color: #d4d4d4;
     display: none;
-    top: 1rem;
+    // top: 1rem;
   }
   .menu {
     left: 2rem;

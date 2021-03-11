@@ -51,7 +51,7 @@ export default {
     margin-bottom: 20px;
     input{
         width: 76%;
-        height: 36px;
+        height: 2.25rem;
         border: 1px solid #ccc;
         border-right: none;
         border-top-left-radius: 5px;
@@ -69,7 +69,7 @@ export default {
         background: deepskyblue;
         color: white;
         // height: 32px;
-        font-size: 14px;
+        font-size: .875rem;
         outline: none;
     }
 }

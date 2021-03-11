@@ -5,7 +5,7 @@
           v-model="value"
           maxlength="100"
           placeholder="你想说些什么呢"
-          style="width: 80%;margin-right:10px"
+          style="width: 80%;margin-right:10px;margin-bottom:.8rem"
           ></el-input>
           <el-button type="primary" @click="publish">发表</el-button>
       </div>
@@ -30,12 +30,12 @@
                         <div class="head">
                             <span class="name">{{item.name}}<span v-show="item.name === 'Heartless'" style="color: #2d8cf0">站长</span></span>
                             <div class="right">
-                                <span class="time">{{item.date | dateFilter}}</span>
-                                <span class="number_id">{{item.id}} 楼</span>
+                                <span class="time" :style="{color: Color}">{{item.date | dateFilter}}</span>
+                                <span class="number_id" :style="{color: Color}">{{item.id}} 楼</span>
                             </div>
                         </div>
                         <div class="content">
-                            <p class="message">{{item.value}}</p>
+                            <p class="message" :style="{color: Color}">{{item.value}}</p>
                             <p class="reply" @click='SetReplyInfo(item, index)'>回复</p>
                         </div>
                     </div>
@@ -265,6 +265,8 @@ export default {
                     justify-content: space-between;
                     margin-bottom: 5px;
                     .name{
+                        display: block;
+                        width: 100px;
                         color: red;
                     }
                     .right{
@@ -310,11 +312,15 @@ export default {
                     display: flex;
                     justify-content: space-between;
                     margin-bottom: 5px;
+                    .left{
+                        display: flex;
+                    }
                     .name{
                         color: red;
                         margin-right: 16px;
                     }
                     .right{
+                        width: 26px;
                         .number_id{
                             float: right;
                         }

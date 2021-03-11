@@ -1,10 +1,10 @@
 <template>
   <div id="Article">
-    <el-row :gutter="20" style="width:100%">
-        <el-col :xs="24" :sm={span:12,offset:3}>
+    <el-row :gutter="22" style="width:100%">
+        <el-col :xs="24" :sm={span:12,offset:1} :md={span:12,offset:2} :lg={span:11,offset:3}>
             <Left/>
         </el-col>
-        <el-col :xs="0" :sm="5">
+        <el-col :xs="0" :sm="10" :md="7" :lg="6">
             <Right/>
         </el-col>
     </el-row>

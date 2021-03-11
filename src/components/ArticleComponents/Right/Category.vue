@@ -68,7 +68,7 @@ export default {
 <style lang='scss'>
 .box-card {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     .wrap{
       display: flex;
       flex-wrap: wrap;

@@ -63,6 +63,7 @@ export default {
       border: 1px solid #ccc;
       break-inside:avoid;
       padding: 0.6rem;
+      margin-bottom: .8rem;
     img {
       max-width: 100%;
     }
