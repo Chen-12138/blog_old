@@ -3,9 +3,10 @@
       <header :style="{color: Color}"> 
       当前位置: <router-link style="cursor:pointer" tag="span" to="/">首页</router-link> > 云相册
       </header>
+        <h2>相册内容</h2>
         <div id="container">
           <div class="card" v-for="(item, index) in PhotoList" :key="index">
-            <el-image :src="item.imgsrc[0]" @click="handleToDetail(item.pic_id)"></el-image>
+            <el-image :src="item"></el-image>
             <p>{{item.brief}}</p>
             <p>{{item.create_time}}</p>
           </div>
@@ -18,12 +19,8 @@ export default {
     name: 'about',
     data() {
         return {
-            // 页数
-            page: 1,
-            // 每页数量
-            pageSize: 10,
-            // 总数
-            count: 10,
+            // 接受传进来的id
+            pic_id: '',
             // 获取的数组
             PhotoList: []
         }
@@ -33,43 +30,49 @@ export default {
             return this.$store.state.Color
         }
     },
-    mounted() {
-        this.getPhotos()
+    watch: {
+        $route(){
+            if(this.$route.params.id){
+                this.pic_id = this.$route.params.id
+                // console.log(this.pic_id)
+                this.getPhotos(this.pic_id)
+            }
+        }
+    },
+    async mounted() {
+        // console.log(this.$route.params.id);
+        this.pic_id = this.$route.params.id
+        await this.getPhotos(this.pic_id)
     },
     methods: {
-        async getPhotos() {
+        async getPhotos(pic_id) {
             try {
-                const res = await this.$api.getPhotos()
-                console.log(res)
+                const res = await this.$api.getPhotoById(pic_id)
+                // console.log(res.data.imgsrc)
                 if (res.code === 200) {
-                    this.$message.success("获取相册成功")
-                    res.data.map(item => {
-                      item.imgsrc = JSON.parse(item.imgsrc)
-                    })
-                    this.PhotoList = res.data
-                    // console.log(res.data)
+                    this.PhotoList = JSON.parse(res.data.imgsrc)
+                    // console.log(this.PhotoList)
                 } else {
                     this.$message.error(error)
                 }
             } catch (error) {
                 this.$message.error(error)
             }
-        },
-        // 跳转详情页
-        handleToDetail (id) {
-          this.$router.push(`/photoDetail/${id}`);
         }
     }
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
 #photos {
   width: 90%;
   margin:2rem auto;
   position: relative;
   z-index: 5;
   transition: all 1s;
+  h2{
+      margin-bottom: 2rem;
+  }
   #container {
     width: 100%;
     columns: 5;
@@ -82,9 +85,8 @@ export default {
       break-inside:avoid;
       padding: 0.6rem;
       margin-bottom: .8rem;
-    ::v-deep img {
+    img {
       max-width: 100%;
-      cursor: pointer;
     }
     p:nth-child(2) {
       color:orange;

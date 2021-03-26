@@ -10,8 +10,8 @@
       <el-form-item>
         <div class="logintitle" :style="{color: Color}">欢迎加入Heartless的小家庭！</div>
       </el-form-item>
-      <el-form-item prop="user">
-        <el-input v-model="ruleForm.user">
+      <el-form-item prop="username">
+        <el-input v-model="ruleForm.username">
           <template slot="prepend"><i class="el-icon-user"></i></template>
         </el-input>
       </el-form-item>
@@ -75,7 +75,7 @@ export default {
     return {
       ruleForm: {
         password: "",
-        user: "",
+        username: "",
         email: "",
         code: "",
       },
@@ -94,7 +94,7 @@ export default {
           { required: true, message: "请输入密码", trigger: "blur" },
           // { min: 3, max: 5, message:'密码长度最少为8位,最多16位哦,（＞人＜；）', trigger: 'blur' }
         ],
-        user: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
       },
     };
   },
@@ -175,17 +175,14 @@ export default {
             });
             try {
               const res = await this.$api.userLogin(this.ruleForm);
-              console.log(res.data);
-              if (res.err == 0) {
+              console.log(res);
+              if (res.code == 200) {
                 this.$message.success("登录成功啦，马上带您去浏览我的小站！");
                 /* 保存token */
                 localStorage.setItem("username", res.token);
                 setTimeout(() => {
                   this.$router.back();
                 }, 1000);
-              } else if (res.err == -998) {
-                /* 报错找不到用户，进行注册 */
-                this.$message.error(res.data);
               } else {
                 this.$message.error(res.data);
               }
@@ -214,7 +211,7 @@ export default {
             const res = await this.$api.sendEmail({
               email: this.ruleForm.email + "@qq.com",
             });
-            if (res.err == 0) {
+            if (res.code == 200) {
               /* 发送成功 */
               this.$message.success("验证码已经发送到小主的邮箱了,(●ˇ∀ˇ●)");
               /* 进行倒计时 设置定时一分钟后可访问 */

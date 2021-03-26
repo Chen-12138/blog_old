@@ -7,7 +7,7 @@
   <div
     class="ItemList"
     v-for="(item, index) in showList"
-    @click="timeArticle(item.article_id)"
+    @click="handleToDetail(item.article_id)"
     :key="index"
     :title="item.title"
   >
@@ -16,7 +16,7 @@
     </span>
     <span>
       <!-- <Icon type="ios-clock-outline" /> -->
-      {{item.time | dateFilter}}
+      {{item.create_time | formateDate}}
     </span>
   </div>
 </el-card>
@@ -39,11 +39,6 @@ export default {
         showList: []
       }
     },
-    filters: {
-      dateFilter(V) {
-        return moment(V).format("YYYY-MM-DD");
-      }
-    },
     mounted() {
       setTimeout(()=>{
         this.some()
@@ -58,6 +53,10 @@ export default {
       },
       more() {
         this.showList = this.recentList
+      },
+      // 跳转详情页
+      handleToDetail(article_id) {
+        this.$router.push(`/detail/${article_id}`)
       }
     }
 }

@@ -34,7 +34,7 @@
         label="简介"
         style="width: 40%">
         <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.info }}</span>
+            <span style="margin-left: 10px">{{ scope.row.introduction }}</span>
         </template>
         </el-table-column>
         <el-table-column 
@@ -46,7 +46,7 @@
             <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除用户</el-button>
+            @click="handleDelete(scope.row.username)">删除用户</el-button>
         </template>
         </el-table-column>
       </el-table>
@@ -68,18 +68,24 @@ export default {
         async getUser() {
             try {
                 const res = await this.$api.getUser()
-                if (res.err == 0) {
-                    this.tableData = res.message
+                if (res.code == 200) {
+                    this.tableData = res.data
                 } else {
-                    this.$message.error(res.message)
+                    this.$message.error(res.msg)
                 }
             } catch (error) {
                 this.$message.error(error)
             }
         },
         // 删除用户
-        handleDelete() {
-
+        async handleDelete(username) {
+            const res = await this.$api.deleteUser(username);
+            if(res.code == 200){
+                this.$message.success(res.msg)
+                location.reload();
+            } else {
+                this.$message.error(res.msg)
+            }
         }
     },
 }

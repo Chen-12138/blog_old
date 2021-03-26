@@ -6,7 +6,7 @@
       </div>
       <div v-if="username" class="SuccessInfo">
           <h4 style="color:orange;margin-bottom:1rem;" :style="{color: Color}">下面这些就是您的个人信息啦(●ˇ∀ˇ●)~</h4>
-          <img :src="MyInfo.uploadimg" alt="这是头像啦啦啦~">
+          <img :src="MyInfo.avatar" alt="这是头像啦啦啦~">
           <el-upload
             v-show="flag"
             class="avatar-uploader"
@@ -19,7 +19,7 @@
           </el-upload>
           <el-button type="primary" class="back_out" @click="open">退出登录</el-button>    
           <p><span>昵称:</span><input :class="{active:!flag}" :disabled="!flag" class="name" type="text" v-model="MyInfo.name"></p>
-          <p><span>介绍:</span><input :class="{active:!flag}" :disabled="!flag" class="info" type="text" v-model="MyInfo.info"></p>
+          <p><span>介绍:</span><input :class="{active:!flag}" :disabled="!flag" class="info" type="text" v-model="MyInfo.introduction"></p>
           <p>
           <el-button class="editor_Info" @click="updateInfo" type="default">编辑信息</el-button>
           <el-button class="primary" v-show="flag" @click="submit" type="primary">提交</el-button>
@@ -56,9 +56,10 @@ export default {
             this.username = localStorage.getItem('username')
             if(this.username) {
                 const res = await this.$api.getInfo(this.username)
-                if (res.err === 0) {
-                    this.MyInfo = res.Info[0]
-                } else if (res.err === -999) {
+                console.log(res);
+                if (res.code === 200) {
+                    this.MyInfo = res.Info
+                } else if (res.code === 400) {
                     this.$message.error('对不起，您的登录信息已过期，请重新登陆。')
                     localStorage.removeItem('username')
                     setTimeout(() => {

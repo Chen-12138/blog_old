@@ -10,8 +10,8 @@
           </el-form-item>
       </el-form> -->
         <replyOrpublish
-        :messageData='messageList' publishURL="/message/leavemessage"
-        replyURL='/message/replyInfo'
+        :messageData='messageList' publishURL="/message/leaveMessage"
+        replyURL='/message/messageReply'
         style="margin-bottom:30px"
         />
         <el-pagination
@@ -30,6 +30,7 @@ export default {
     name: 'LeaveMessage',
     data() {
         return {
+            pageSize: 10,
             messageList: [],
             count: 0
         }
@@ -38,7 +39,7 @@ export default {
         replyOrpublish
     },
     mounted() {
-        this.Pagechange(1)
+        this.Pagechange(1,this.pageSize)
     },
     methods: {
         // 换页的回调函数
@@ -48,10 +49,11 @@ export default {
         async Pagechange(index) {
             /* 发起请求 */
             this.$store.commit('LoadingTitleChange', {isShow: true, title: '正在获取留言信息~'})
-            const res = await this.$api.getComment(index)
-            if (res.err === 0) {
-                this.count = res.message.count
-                this.messageList = res.message.data
+            const res = await this.$api.getComment(index, this.pageSize)
+            console.log(res)
+            if (res.code === 200) {
+                this.count = res.data.count
+                this.messageList = res.data.data
             } else {
                 this.$message.error("网络出错了,(ノへ￣、)！")
             }

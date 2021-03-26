@@ -29,6 +29,7 @@ import {
   Image,
   Form,
   FormItem,
+  Dialog,
   Input,
   Button,
   Message,
@@ -58,6 +59,7 @@ Vue.use(Pagination);
 Vue.use(Image);
 Vue.use(Form);
 Vue.use(FormItem);
+Vue.use(Dialog);
 Vue.use(Input);
 Vue.use(Button);
 Vue.use(Dropdown);
@@ -69,6 +71,31 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$confirm = MessageBox.confirm;
 
 Vue.config.productionTip = false
+
+Vue.filter('formateDate',(time)=>{
+  // console.log(time)
+  var date = new Date(parseInt(time));
+  // console.log(date)
+  var y = date.getFullYear();
+  var m = date.getMonth()+1;
+  var d = date.getDate();
+  return (y < 10 ? ('0'+y):y) + '-' + (m < 10 ? ('0'+m):m) + '-' + (d < 10 ? ('0'+d):d);
+})
+
+Vue.filter('formateDateDetail',(time)=>{
+  // console.log(time)
+  var date = new Date(parseInt(time));
+  // console.log(date)
+  var Y = date.getFullYear();
+  var M = date.getMonth()+1;
+  var D = date.getDate();
+  var h = date.getHours();
+  var m = date.getMinutes();
+  var s = date.getSeconds();
+  return (Y < 10 ? ('0'+Y):Y) + '-' + (M < 10 ? ('0'+M):M) + '-' + (D < 10 ? ('0'+D):D) + ' ' + (h < 10 ? ('0'+h):h) + ':' + (m < 10 ? ('0'+m):m) + ':' + (s < 10 ? ('0'+s):s);
+})
+
+
 
 new Vue({
   router,

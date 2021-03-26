@@ -17,14 +17,14 @@
         label="文章简介"
         style="width: 30%">
         <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.article_brief }}</span>
+            <span style="margin-left: 10px">{{ scope.row.brief }}</span>
         </template>
         </el-table-column>
         <el-table-column
         label="文章分类"
         style="width: 30%">
         <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.article_categroy }}</span>
+            <span style="margin-left: 10px">{{ scope.row.category }}</span>
         </template>
         </el-table-column>
         <el-table-column 
@@ -60,7 +60,9 @@ export default {
     data() {
       return {
         tableData: [],
-        count: 0
+        count: 0,
+        page: 1,
+        pageSize: 3
       }
     },
     mounted() {
@@ -81,16 +83,17 @@ export default {
       },
       //换页
       PageChange(page) {
+          this.page = page
           this.getPage(page)
       },
       // 获取文章
       async getPage(page) {
-          const res = await this.$api.getNote(page)
-          if (res.err === 0) {
-              this.tableData = res.message.data
-              this.count = res.message.count
+          const res = await this.$api.getArticle(page, this.pageSize)
+          if (res.code === 200) {
+              this.tableData = res.data.data
+              this.count = res.data.count
           } else {
-              this.$message.error(error)
+              this.$message.error(res.msg)
           }
       }
     }

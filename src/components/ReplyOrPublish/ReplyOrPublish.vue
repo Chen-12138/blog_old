@@ -25,17 +25,17 @@
             </div> -->
             <div v-for="(item,index) in messageData" :key="item.id" class="Content">
                 <div class="contentItem">
-                    <img :src="item.Imgsrc" alt="用户头像">
+                    <img :src="item.imgsrc" alt="用户头像">
                     <div class="info">
                         <div class="head">
-                            <span class="name">{{item.name}}<span v-show="item.name === 'Heartless'" style="color: #2d8cf0">站长</span></span>
+                            <span class="name">{{item.name}}<span v-show="item.name === '123456'" style="color: #2d8cf0">站长</span></span>
                             <div class="right">
                                 <span class="time" :style="{color: Color}">{{item.date | dateFilter}}</span>
                                 <span class="number_id" :style="{color: Color}">{{item.id}} 楼</span>
                             </div>
                         </div>
                         <div class="content">
-                            <p class="message" :style="{color: Color}">{{item.value}}</p>
+                            <p class="message" :style="{color: Color}">{{item.content}}</p>
                             <p class="reply" @click='SetReplyInfo(item, index)'>回复</p>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                     <div class="info">
                         <div class="head">
                             <div  class="left">
-                            <span class="name">{{replyItem.name}}<span v-show="replyItem.name === 'Heartless'" style="color: #2d8cf0">站长</span></span>
+                            <span class="name">{{replyItem.name}}<span v-show="replyItem.name === '123456'" style="color: #2d8cf0">站长</span></span>
                             <span class="time">{{replyItem.date | dateFilter}}</span>
                             </div>
                             <div class="right">
@@ -96,12 +96,16 @@ export default {
             isShow: false,
             // 参数对象
             obj: {},
+            // 留言id
+            message_id: '',
+            // 回复id
+            reply_id: '',
             replyInfo: {},
             // replyValue: ''
         }
     },
     mounted() {
-        
+        // console.log(this.$route.params.id)
     },
     filters: {
         dateFilter(val) {
@@ -119,10 +123,8 @@ export default {
     methods: {
         // 回复留言
         SetReplyInfo(item, index) {
-            item.date = moment(item.date).format('YYYY-MM-DD HH:mm:ss')
-            this.replyInfo.Info = item
-            this.replyInfo.index = index
-            this.replyInfo.Info.article_type = this.$route.params.index
+            this.message_id = item.id;
+            this.reply_id = '';
             // 打开输入框
             this.open()
         },
@@ -132,40 +134,40 @@ export default {
                 if (this.value) {
                     const username = localStorage.getItem('username')
                     /* detail start */
-                    const article_id = this.$route.params.article_id
-                    let that = this
-                    if (this.publishURL == '/note/accessPublish') {
+                    const article_id = this.$route.params.id
+                    // let that = this
+                    if (this.publishURL == '/article/leaveMessage') {
                         this.obj = {
                             token: username,
                             article_id: article_id,
-                            access_content: that.value
+                            content: this.value
                         }
                     }
                     /* detail end */
                     /* leave message start */
-                    if (this.publishURL == '/message/leavemessage') {
+                    if (this.publishURL == '/message/leaveMessage') {
                         this.obj = {
                             token:username,
-                            value:this.value
+                            content:this.value
                         }
                     }
                     /* leave message end */
                     try {
                         const res = await this.$api.publish(this.publishURL,this.obj)
-                        if (res.err == 0) {
-                            this.$message.success(res.message)
+                        if (res.code == 200) {
+                            this.$message.success(res.msg)
                             setTimeout(()=>{
                                 location.reload()
                             }, 1000)
                         } else {
-                            this.$message.error(res.message)
+                            this.$message.error(res.msg)
                         }
                     } catch (error) {
-                        this.$message,error(error)
+                        this.$message.error(error)
                     }
                     
                 } else {
-                    this.$message.error(res.message)
+                    this.$message.error(res.msg)
                 }
             } else {
                 this.$message.error("请先去登陆再来留言哦,(ノへ￣、)！")
@@ -175,21 +177,21 @@ export default {
         async handleInputContent(value) {
             const token = localStorage.getItem('username')
             if (!token) return this.$message.error('您还没有登录呢！')
-            this.replyInfo.replyValue = value
-            // console.log(this.replyInfo instanceof Object)
             try {
                 const res = await this.$api.reply(this.replyURL, {
-                    replyInfo: this.replyInfo,
+                    message_id: this.message_id,
+                    reply_id: this.reply_id,
+                    content: value,
                     token
                 })
-                console.log(res)
-                if (res.err === 0) {
-                    this.$message.success(res.message)
+                // console.log(res)
+                if (res.code === 200) {
+                    this.$message.success(res.msg)
                     setTimeout(() => {
                         location.reload()
                     }, 1500)
                 } else {
-                    this.$message.error(res.message)
+                    this.$message.error(res.msg)
                 }
             } catch (error) {
                 this.$message.error(error)
@@ -218,14 +220,8 @@ export default {
         },
         // 回复留言的回复
         async SetPaddingReply(selfItem, parentItem, index) {
-            const item = {}
-            item.datetime = moment(selfItem.datetime).format('YYYY-MM-DD HH:mm:ss')
-            item.name = selfItem.name //嵌套回复的名字
-            item.username = parentItem.username //嵌套回复的祖先名字
-            item.date = moment(parentItem.date).format('YYYY-MM-DD HH:mm:ss') // 祖先时间
-            this.replyInfo.Info = item
-            this.replyInfo.Info.article_type = this.$route.params.index
-            this.replyInfo.index = index
+            this.reply_id = selfItem.id;
+            this.message_id = '';
             this.open()
         }
     }
@@ -320,7 +316,7 @@ export default {
                         margin-right: 16px;
                     }
                     .right{
-                        width: 26px;
+                        // width: 26px;
                         .number_id{
                             float: right;
                         }

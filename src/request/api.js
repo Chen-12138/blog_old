@@ -7,68 +7,68 @@ import { get, post } from './http'
  * @param  code 验证码
  * @param  emial 邮箱
  */ 
-export const userLogin = (params) => post('/user/login', params)
+export const userLogin = (params) => post('/users/login', params)
 
 /**
  * @method 发送邮箱接口
  * @param  email
  */
-export const sendEmail = (email) => post('/user/emailInfo', email)
+export const sendEmail = (email) => post('/users/sendEmail', email)
 
 /**
  * @method 获取个人信息
  * @param  username
  */
-export const getInfo = (username) => post('/user/getuserInfo', {token: username})
+export const getInfo = (username) => post('/users/getuserInfo', {token: username})
 
 /**
- * @method 获取个人信息
+ * @method 更新个人信息
  * @param  username
  */
-export const updateInfo = (params) => post('/user/primaryInfo', params)
+export const updateInfo = (params) => post('/users/primaryInfo', params)
 
 /**
  * @method 获取文章
  * @param  page
  */ 
-export const getArticle = (page) => get(`/page/getnotePage?page=${page}`, {})
+export const getArticle = (page, pageSize) => get(`/article/getArticle?page=${page}&pageSize=${pageSize}`, {})
 
 /** 
  * @method 获取分类
  * @param  无
 */
-export const getCategory = () => get('/note/getcategroys', {})
+export const getCategory = () => get('/article/getCategory', {})
 
 /**
  * @method 获取标签
  * @param  无
  */
-export const getLable = () => get('/note/getlables', {})
+export const getLabel = () => get('/article/getLable', {})
 
 /**
  * @method 获取最近发表的文章
  * @param  无
  */
-export const getTimenoteList = () => get('/note/gettimenoteList', {})
+export const getRecentArticle = () => get('/article/getRecentArticle', {})
 
 /**
  * @method 搜索获取最近发表的文章
  * @param  value
  */
-export const getSearch = (value) => post('/note/like_article_search/', {value})
+export const getSearch = (keyword) => post('/article/articleSearch', {keyword})
 
 
 /**
  * @method 根据标签获取文章
  * @param  lable
  */
-export const getLableInfo = (lable) => post('/note/getlableInfo', {lable})
+export const getLableInfo = (params) => post('/article/getArticleByLabel', params)
 
 /**
  * @method 根据分类获取文章
  * @param  catogroy
  */
-export const getCategorynIfo = (categroy) => post('/note/getManycategroys', {categroy})
+export const getCategorynIfo = (params) => post('/article/getArticleByCategory', params)
 
 /**
  * @method 点赞
@@ -78,15 +78,23 @@ export const getLike = (params) => post('/note/notelike', params)
 
 /**
  * @method 获取图片
- * @param  lable
+ * @param  page
+ * @param  pageSize
  */
-export const getPhotos = () => get('/upload/gettalk', {})
+export const getPhotos = (page, pageSize) => get(`/photo/getPhoto?page=${page}&pageSize=${pageSize}`, {})
+
+/**
+ * @method 获取相册详情
+ * @param  pic_id
+ */
+ export const getPhotoById = (pic_id) => post(`/photo/getPhotoById`, {pic_id})
+
 
 /**
  * @method 获取评论
  * @param  
  */
-export const getComment = (page) => get(`/page/pageSize?page=${page}`)
+export const getComment = (page, pageSize) => get(`/message/getMessage?page=${page}&pageSize=${pageSize}`, {})
 
 /**
  * @method 留言
@@ -109,6 +117,15 @@ export const reply = (replyURL,params) => post(replyURL, params)
 export const getArticleInfo = (id) => get(`/note/bynotetext/${id}`, {})
 
 /**
+ * @method 获取文章留言
+ * @param  article_id
+ * @param  page
+ * @param  pageSize
+ */
+ export const getArticleMessage = (params) => post(`/article/getMessageById`, params)
+
+
+/**
  * @method 获取Demo
  */
-export const getDemo = (page) => get(`/note/getdemolist?page=${page}`, {})
+export const getDemo = (page, pageSize) => get(`/video/getVideo?page=${page}&pageSize=${pageSize}`, {});

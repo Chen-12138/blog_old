@@ -15,16 +15,17 @@
         </el-upload>
         <p>文章简介：</p>
         <el-input v-if="isShow" type="textarea" :rows="4" style="width:80%" placeholder="请输入文章简介..." v-model="publishDate.brief"></el-input>
-        <el-input v-else type="textarea" :rows="4" style="width:80%" placeholder="请输入文章简介..." v-model="updateData.article_brief"></el-input>
+        <el-input v-else type="textarea" :rows="4" style="width:80%" placeholder="请输入文章简介..." v-model="updateData.brief"></el-input>
         <p>文章主体内容：</p>
-        <el-input v-if="isShow" type="textarea" :rows="16" style="width:80%" placeholder="请输入文章主体内容..." v-model="publishDate.content"></el-input>
-        <el-input v-else type="textarea" :rows="16" style="width:80%" placeholder="请输入文章主体内容..." v-model="updateData.content"></el-input>
+        <!-- <el-input v-if="isShow" type="textarea" :rows="16" style="width:80%" placeholder="请输入文章主体内容..." v-model="publishDate.content"></el-input>
+        <el-input v-else type="textarea" :rows="16" style="width:80%" placeholder="请输入文章主体内容..." v-model="updateData.content"></el-input> -->
+        <markdown ref="md" :toolbarsFlag="true" :subfield="true" :defaultOpen="'edit'"/>
         <p>文章标签：</p>
-        <el-input v-if="isShow" v-model="publishDate.lable" style="width:200px" placeholder="请输入内容"></el-input>
-        <el-input v-else v-model="updateData.lable" style="width:200px" placeholder="请输入内容"></el-input>
+        <el-input v-if="isShow" v-model="publishDate.label" style="width:200px" placeholder="请输入内容"></el-input>
+        <el-input v-else v-model="updateData.label" style="width:200px" placeholder="请输入内容"></el-input>
         <p>文章分类：</p>
-        <el-input v-if="isShow" v-model="publishDate.categroy" style="width:200px" placeholder="请输入内容"></el-input>
-        <el-input v-else v-model="updateData.article_categroy" style="width:200px" placeholder="请输入内容"></el-input>
+        <el-input v-if="isShow" v-model="publishDate.category" style="width:200px" placeholder="请输入内容"></el-input>
+        <el-input v-else v-model="updateData.category" style="width:200px" placeholder="请输入内容"></el-input>
         <div class="event-Button">
             <el-button @click="handeleClick" type="primary">{{btntext}}</el-button>
             <el-button v-show="!isShow" @click="handleCancel" type="default">取消</el-button>
@@ -35,24 +36,26 @@
 </template>
 
 <script>
+import markdown from './markdownEdit'
 export default {
     name: 'articlePublish',
     data() {
         return {
             publishDate:{
-                src:'',
+                img:'',
                 title:'',
                 brief:'',
                 content:'',
-                lable:'',
-                categroy:''
+                label:'',
+                category:''
             },
             updateData: {
-                article_img: '',
+                img: '',
                 content: '',
                 title: '',
-                article_brief: '',
-                lable: ''
+                brief: '',
+                lable: '',
+                category: ''
             },
             imageUrl: '',
             // 控制更新的显示
@@ -63,12 +66,13 @@ export default {
     },
     computed: {
         articleImageUpload() {
-            return `${this.$store.state.baseURL}/upload/imageUpload`
+            return `${this.$store.state.baseURL}/admin/uploadCover`
         }
     },
     mounted() {
         const id = this.$route.query.article_id
-        console.log(id)
+        // const admin_id = JSON.parse(localStorage.getItem('admin')).admin_id;
+        // console.log(admin_id);
         if (id) {
             this.isShow = false
             this.btntext = "更新"
@@ -79,9 +83,11 @@ export default {
         // 获取文章内容
         async getArticleInfo(id) {
             const res = await this.$api.getDetail(id)
-            if (res.err === 0) {
-                this.updateData = res.message[0]
-                this.imageUrl = res.message[0].article_img
+            if (res.code === 200) {
+                this.updateData = res.data
+                this.imageUrl = res.data.img
+                // 暴力解决不能初始化mark初始化值
+                this.$refs.md.content = this.updateData.content
             } else {
                 this.$message.error(res.error)
             }
@@ -89,8 +95,8 @@ export default {
         // 上传成功的回调函数
         handleSuccess(res, file) {
             // console.log(res, file)
-            this.publishDate.src = res.url
-            this.updateData.article_img = res.url
+            this.publishDate.img = res.file.url
+            this.updateData.img = res.file.url
             this.imageUrl = URL.createObjectURL(file.raw)
         },
         // 处理按钮为更新或发表
@@ -104,38 +110,46 @@ export default {
         // 更新文章
         async handleUpdate() {
             if (
-                !this.updateData.article_img ||
+                !this.updateData.img ||
                 !this.updateData.content ||
                 !this.updateData.title ||
-                !this.updateData.article_brief ||
-                !this.updateData.lable
+                !this.updateData.brief ||
+                !this.updateData.label ||
+                !this.updateData.category
             ) return this.$message.error("请输入完整的文章信息!");
+            this.updateData.content = this.$refs.md.content
             const res = await this.$api.articleUpdate(this.updateData)
-            if (res.err == 0) {
-                this.$message.success(res.message)
+            if (res.code == 200) {
+                this.$message.success(res.msg)
             } else {
-                this.$message.error(res.error)
+                this.$message.error(res.msg)
             }
             this.$router.back()
         },
         // 发表文章
         async handlePublish() {
             if(
-                !this.publishDate.src ||
+                !this.publishDate.img ||
                 !this.publishDate.content ||  
                 !this.publishDate.title ||  
                 !this.publishDate.brief ||  
-                !this.publishDate.categroy ||
-                !this.publishDate.lable 
+                !this.publishDate.category ||
+                !this.publishDate.label 
             ) return this.$message.error('请输入完整的文章信息!')
             const obj = this.publishDate
-            const path = this.publishDate.lable + Math.floor(Math.random()*2000000)
-            obj.articlePath = path
+            // const path = this.publishDate.lable + Math.floor(Math.random()*2000000)
+            // obj.articlePath = path
+            const admin_id = JSON.parse(localStorage.getItem('admin')).admin_id;
+            const name = JSON.parse(localStorage.getItem('admin')).name;
+            const avatar = JSON.parse(localStorage.getItem('admin')).avatar;
+            obj.admin_id = admin_id;
+            obj.name = name;
+            obj.avatar = avatar;
             const res = await this.$api.articlePublish(obj)
-            if (res.err == 0) {
-                this.$message.success(res.message)
+            if (res.code == 200) {
+                this.$message.success(res.msg)
             } else {
-                this.$message.error(res.message)
+                this.$message.error(res.msg)
             }
             this.$router.back()
         },
@@ -143,6 +157,9 @@ export default {
         handleCancel() {
             this.$router.back()
         }
+    },
+    components: {
+        markdown
     }
 }
 </script>

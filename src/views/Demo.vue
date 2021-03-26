@@ -2,11 +2,11 @@
   <div id="demo">
       <div v-for="(item, index) in demoList" :key="index" class="demoItem">
           <video id="video" controls :poster="item.video_pic">
-              <source :src="item.video_path" type="video/mp4" />
+              <source :src="item.video_url" type="video/mp4" />
           </video>
           <footer>
-              <p :style="{color: Color}">{{item.content}}</p>
-              <span :style="{color: Color}">{{item.datetime | dateFilter}}</span>
+              <p :style="{color: Color}">{{item.desc}}</p>
+              <span :style="{color: Color}">{{item.create_time | dateFilter}}</span>
               <el-button type="primary" @click="CheckCode(item.code_path)">查看源码</el-button>
           </footer>
       </div>
@@ -27,7 +27,8 @@ export default {
     data() {
         return {
             demoList: [],
-            // page: 1
+            page: 1,
+            pageSize: 6
         }
     },
     filters:{
@@ -46,11 +47,12 @@ export default {
     methods: {
         async getDemo(index) {
             try {
-                const res = await this.$api.getDemo(index);
-                if (res.err == 0) {
-                    this.demoList = res.data
+                const res = await this.$api.getDemo(index, this.pageSize);
+                console.log(res)
+                if (res.code == 200) {
+                    this.demoList = res.data.data
                 } else {
-                    this.$message.error(res.message)
+                    this.$message.error(res.msg)
                 }
             } catch (error) {
                 this.$message.error(error)

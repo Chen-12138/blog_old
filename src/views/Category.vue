@@ -82,7 +82,7 @@ export default {
             try {
                 const res = await this.$api.getLableInfo(item)
                 if (res.err == 0) {
-                    this.$message.success('为您找到一下内容喔~');
+                    this.$message.success('为您找到以下内容喔~');
                     this.List = res.message
                     this.count = res.message.length
                 } else {

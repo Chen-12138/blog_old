@@ -27,7 +27,6 @@
             style="margin-bottom:2rem"
             class="upload-demo"
             :action="baseURL"
-            :on-change="handleChange"
             :on-success="handleCodeSuccess"
             :file-list="fileList">
           <el-button type="primary"><i class="el-icon-upload" style="margin-right:.5rem"></i>点击上传</el-button>
@@ -61,37 +60,41 @@ export default {
     },
     computed: {
         baseURL() {
-        return `${this.$store.state.baseURL}/upload/imageUpload`;
+        return `${this.$store.state.baseURL}/video/upload`;
         },
     },
     methods: {
-        handleImgSuccess(res) {
-            this.video_pic = res.url
+        handleImgSuccess(res, file) {
+            // console.log(res,file)
+            this.video_pic = res.file.url
         },
         handleVideoSuccess(res) {
-            this.video_path = res.url
+            this.video_path = res.file.url
         },
         handleCodeSuccess(res) {
-            this.code_path = res.url
+            this.code_path = res.file.url
         },
         handeleChange() {
 
         },
         async publish() {
             try {
+                const admin_id = JSON.parse(localStorage.getItem('admin')).admin_id;
                 const res = await this.$api.sendDemo({
-                    content: this.content,
-                    videoPIC: this.video_pic,
-                    videoPath: this.video_path,
-                    codePath: this.code_path
+                    admin_id: admin_id,
+                    brief: this.content,
+                    video_pic: this.video_pic,
+                    video_url: this.video_path,
+                    // codePath: this.code_path
                 })
-                if (res.err === 0) {
-                    this.$message.success(res.data)
+                console.log(res)
+                if (res.code === 200) {
+                    this.$message.success(res.msg)
                     setTimeout(() => {
                         this.$router.replace('/demo')
                     },1000)
                 } else {
-                    this.$message.error(res.data)
+                    this.$message.error(res.msg)
                 }
             } catch (error) {
                 this.$message.error(error)

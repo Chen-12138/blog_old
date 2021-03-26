@@ -6,7 +6,7 @@
   </div>
   <div class="wrap">
     <div v-for="(item, index) in tagList" :key="index" style="margin-right:1rem">
-      <el-tag class="tag" @click="emitToLeft(item)">{{item}}</el-tag>
+      <el-tag class="tag" @click="handleClick(item)">{{item}}</el-tag>
     </div>
   </div>
 </el-card>
@@ -40,24 +40,71 @@ export default {
           "volcano",
           "yellow"
         ],
-        List: []
+        List: [],
+        // 总数
+        count: 0,
+        // 页数
+        page: 1,
+        // 每页数量
+        pageSize: 3,
+        // 当前点击标签
+        label: ''
       }
+    },
+    beforeUpdate() {
+      // 这里的this是项目vue实例，用that接受，与eventBus的vue区分
+      const that = this
+      eventBus.$on('eventToTag', function(val) {
+          // console.log("tag被触发了")
+          that.page = val.page
+          that.pageSize = val.pageSize
+          that.toLeft(that.label)
+          // that.pageSize = val.length
+      })
     },
     methods: {
       // 点击分类显示文章
-      async handleClick(category) {
-        const res = await this.$api.getCategorynIfo(category)
-        if (res.err === 0) {
-          this.List = res.message
+      async handleClick(label) {
+        this.label = label
+        this.page = 1
+        const res = await this.$api.getLableInfo({
+          label: this.label,
+          page: 1,
+          pageSize: this.pageSize
+        });
+        if (res.code === 200) {
+          this.List = res.data.data
+          this.count = res.data.count
+          this.emitToLeft()
           this.$message.success('为您查找到左侧内容!')
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.msg)
+        }
+      },
+      // 左边变化时调用
+      async toLeft(label) {
+        this.label = label
+        const res = await this.$api.getLableInfo({
+          label: this.label,
+          page: this.page,
+          pageSize: this.pageSize
+        });
+        if (res.code === 200) {
+          this.List = res.data.data
+          this.count = res.data.count
+          this.emitToLeft()
+          this.$message.success('为您查找到左侧内容!')
+        } else {
+          this.$message.error(res.msg)
         }
       },
       // 传值给Left
-      async emitToLeft(category) {
-          await this.handleClick(category)
-          eventBus.$emit('eventFromRight', this.List)
+      async emitToLeft(label) {
+          eventBus.$emit('eventFromTag',{
+            List: this.List,
+            count: this.count,
+            page: this.page
+          })
       }
     }
 }

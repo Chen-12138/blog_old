@@ -90,11 +90,12 @@ export default {
                 username: this.user,
                 password: this.pass
             })
-            if (res.err === 0) {
+            if (res.code === 200) {
+                localStorage.setItem('admin', JSON.stringify(res.data));
                 this.$router.replace("/admin/article");
-                this.$message.success(res.message)
+                this.$message.success(res.msg)
             } else {
-                this.$message.error(res.message)
+                this.$message.error(res.msg)
             }
         }
     }

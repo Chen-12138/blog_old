@@ -39,6 +39,11 @@ const routes = [
     component:() => import('../views/Photos.vue')
   },
   {
+    path:'/photoDetail/:id',
+    name:'photoDetail',
+    component:() => import ('../components/PhotoComponents/detail.vue')
+  },
+  {
     path:'/profile',
     name:'profile',
     component:() => import('../views/Profile.vue')
@@ -132,7 +137,8 @@ router.beforeEach((to,from,next) => {
 router.beforeEach(async (to,from,next) => {
   if(to.path.includes("/admin/article")) {
     const res = await getApi.checkLogin()
-    if (res.err === 0) {
+    if (res.code === 200) {
+      // console.log(next)
       next()
     } else {
       router.push({name: 'adminlogin'})

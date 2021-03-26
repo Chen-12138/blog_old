@@ -24,12 +24,12 @@ export default {
         async search() {
             try {
                 const res = await this.$api.getSearch(this.searchValue)
-                if (res.err === 0) {
+                if (res.code === 200) {
                     this.$message.success("为您搜索到左边的内容~")
                     this.searchValue = ''
-                    this.searchList = res.message
+                    this.searchList = res.data
                 } else {
-                    this.$message.error(res.message)
+                    this.$message.error(res.msg)
                 }
             } catch (error) {
                 this.$message.error(error)
@@ -37,7 +37,10 @@ export default {
         },
         async emitToLeft() {
             await this.searchLike()
-            eventBus.$emit('eventFromRight', this.searchList)
+            eventBus.$emit('eventFromRight', {
+                List: this.searchList,
+                count: this.searchList.length
+            })
         }
     }
 }

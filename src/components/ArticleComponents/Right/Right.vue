@@ -36,27 +36,34 @@ export default {
         async getCategorys() {
             try {
             const res = await this.$api.getCategory()
-            if (res.err === 0) {
-                this.categoryList = res.message
+            // console.log(res)
+            if (res.code === 200) {
+                // let arr = []
+                // res.data.forEach(element => {
+                //     arr.push(element.category)
+                // })
+                // this.categoryList = Array.from(new Set(arr))
+                this.categoryList = res.data
             } else {
-                this.$message.error(res.message)
+                this.$message.error(res.msg)
             }
             } catch (error) {
-            this.$message.error(erro)
+            this.$message.error(error)
             }
         },
         // 获取文章标签
         async getTags() {
             try {
-            const res = await this.$api.getLable()
-            if (res.err === 0) {
+            const res = await this.$api.getLabel();
+            // console.log(res);
+            if (res.code === 200) {
                 let arr = []
-                res.message.forEach(element => {
-                    arr.push(element.lable)
+                res.data.forEach(element => {
+                    arr.push(element.label)
                 });
                 this.tagList = Array.from(new Set(arr))
             } else {
-                this.$message.error(res.message)
+                this.$message.error(res.msg)
             }
             } catch (error) {
             this.$message.error(error)
@@ -65,8 +72,9 @@ export default {
         // 获取最近文章
         async getRecent() {
             try {
-            const res = await this.$api.getTimenoteList()
-            this.recentList = res
+            const res = await this.$api.getRecentArticle()
+            // console.log(res)
+            this.recentList = res.data
             } catch (error) {
             this.$message.error(error)
             }
