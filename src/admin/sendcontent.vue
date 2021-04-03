@@ -65,7 +65,7 @@ export default {
                     imgsrc: JSON.stringify(this.fileList),
                     admin_id
                 })        
-                if (res.code == 20) {
+                if (res.code == 200) {
                     this.$message.success(res.msg)
                 } else {
                     this.$message.error(res.msg)
@@ -87,9 +87,10 @@ export default {
             let arr = [];
             fileList.forEach(item => {
                 setTimeout(()=>{
+                    console.log(item.response)
                     this.fileList = [...this.fileList,item.response.file.url];
                     // console.log(item.response.file.url)
-                },50)
+                },120)
             })
             // 提交时再处理重复吧，这里可能异步了
             this.fileList = Array.from(new Set(arr))

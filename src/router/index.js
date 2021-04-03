@@ -6,12 +6,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path:'/',
-    redirect:'/home'
-  },
-  {
-    path:'/home',
-    name:'home',
-    component:() => import('../views/Home.vue')
+    redirect:'/article'
   },
   {
     path:'/article',
@@ -64,6 +59,10 @@ const routes = [
     component:() => import('../views/Category.vue')
   },
   {
+    path:'/admin',
+    redirect:'/admin/login'
+  },
+  {
     path:'/admin/login',
     name:'adminlogin',
     component:() => import ('../admin/adminLogin.vue')
@@ -72,6 +71,7 @@ const routes = [
     path:'/admin/article',
     name:'admin',
     component:() => import ('../admin/articleEditor.vue'),
+    redirect:'/admin/article/upload/articleManage',
     children:[
       {
         path:'/admin/article/upload/demo',
@@ -102,11 +102,6 @@ const routes = [
         path:'/admin/article/upload/users',
         name:'UserManage',
         component:() => import ('../admin/UserManage.vue')
-      },
-      {
-        path:'/admin/article/upload/articleupdate/:id',
-        name:'articleupdate',
-        component:() => import ('../admin/updateArticle.vue')
       }
     ]
   }
@@ -127,7 +122,7 @@ VueRouter.prototype.push = function push(location) {
 /* 全局导航守卫 */
 router.beforeEach((to,from,next) => {
   if(to.path=="/login") {
-      if(localStorage.getItem('username')) {
+      if(localStorage.getItem('token')) {
         router.replace({name:'logined'})
       }
   }

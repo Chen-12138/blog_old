@@ -1,6 +1,6 @@
 <template>
   <div id="message">
-      <h3 style="margin-bottom:25px">可以给博主大大留言，他回来的时候就可以看见啦  (｡･∀･)ﾉﾞ嗨 ~</h3>
+      <h3 style="margin-bottom:25px" :style="{color: Color}">可以给博主大大留言，他回来的时候就可以看见啦  (｡･∀･)ﾉﾞ嗨 ~</h3>
       <!-- <el-form :model="formInline">
           <el-form-item>
               <el-input placeholder="请输入留言内容" v-model="message"></el-input>
@@ -18,7 +18,8 @@
         background
         layout="prev, pager, next"
         :total="count"
-         @current-change="handleCurrentChange"
+        @current-change="handleCurrentChange"
+        style="margin-bottom:30px"
         >
         </el-pagination>
   </div>
@@ -38,6 +39,11 @@ export default {
     components: {
         replyOrpublish
     },
+    computed: {
+        Color() {
+            return this.$store.state.Color
+        }
+    },
     mounted() {
         this.Pagechange(1,this.pageSize)
     },
@@ -48,7 +54,6 @@ export default {
         },
         async Pagechange(index) {
             /* 发起请求 */
-            this.$store.commit('LoadingTitleChange', {isShow: true, title: '正在获取留言信息~'})
             const res = await this.$api.getComment(index, this.pageSize)
             console.log(res)
             if (res.code === 200) {
@@ -57,7 +62,6 @@ export default {
             } else {
                 this.$message.error("网络出错了,(ノへ￣、)！")
             }
-            this.$store.commit('LoadingTitleChange', {isshow: false, title: ''})
         }
     }
 
@@ -66,9 +70,11 @@ export default {
 
 <style lang='scss'>
 #message {
-    width: 85%;
     height: 100%;
+    width: 96%;
     margin: 0 auto;
+    margin-top: 12px;
+    border-radius: 4px;
     text-align: center;
     padding-top:2rem;
     .page {
@@ -76,5 +82,11 @@ export default {
       position: relative;
       z-index: 99;
     }
+}
+@media screen and (max-width:992px) {
+  #message{
+      width: 100%;
+      margin: 0;
+  }
 }
 </style>

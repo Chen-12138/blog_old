@@ -16,7 +16,7 @@ export default {
   name:'light',
   methods:{
     changebg() {
-    this.$emit('changeBackground')
+      this.$emit('changeBackground')
     }
   }
 }

@@ -20,7 +20,7 @@
           <input type="text" placeholder="用户名" />
           <input type="password" placeholder="密码" />
           <input type="email" placeholder="邮箱" />
-          <button id="send_code">发送验证码</button>
+          <button id="send_code1">发送验证码</button>
           <input type="email" placeholder="验证码" />
           <button>注册</button>
         </form>
@@ -214,7 +214,7 @@ button.ghost {
   color: white;
   font-size: 0.6rem;
 }
-button#send_code {
+button#send_code1 {
   width: 100%;
 }
 button.ghost:active {

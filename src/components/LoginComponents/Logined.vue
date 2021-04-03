@@ -23,6 +23,7 @@
 </script>
 <style lang="scss" scoped>
 #Logined {
+    height: 100%;
     padding-top: 10rem;
     text-align: center;
     img {

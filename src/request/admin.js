@@ -65,3 +65,10 @@ export const getUser = () => get('/admin/getUser', {})
  * @param  username 用户名
  */
 export const deleteUser = (username) => post('/admin/deleteUser', {username})
+
+/**
+ * @methos 删除文章
+ * @param article_id
+ */
+
+export const deleteArticle = (article_id) => post('/article/deleteMessage', {article_id})

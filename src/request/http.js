@@ -4,12 +4,12 @@
  import axios from 'axios';
  import qs from 'qs';
  import { Message } from 'element-ui';
- import store from '../store/index'
  
  axios.defaults.baseURL = 'http://localhost:3000'
 
 axios.defaults.withCredentials = true;
- 
+axios.defaults.crossDomain = true;
+
  // 请求超时时间
  axios.defaults.timeout = 10000;
  

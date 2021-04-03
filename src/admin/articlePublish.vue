@@ -109,6 +109,7 @@ export default {
         },
         // 更新文章
         async handleUpdate() {
+            this.updateData.content = this.$refs.md.content
             if (
                 !this.updateData.img ||
                 !this.updateData.content ||
@@ -117,7 +118,6 @@ export default {
                 !this.updateData.label ||
                 !this.updateData.category
             ) return this.$message.error("请输入完整的文章信息!");
-            this.updateData.content = this.$refs.md.content
             const res = await this.$api.articleUpdate(this.updateData)
             if (res.code == 200) {
                 this.$message.success(res.msg)
@@ -128,6 +128,7 @@ export default {
         },
         // 发表文章
         async handlePublish() {
+            this.publishDate.content = this.$refs.md.content
             if(
                 !this.publishDate.img ||
                 !this.publishDate.content ||  

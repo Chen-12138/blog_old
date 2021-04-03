@@ -103,14 +103,16 @@ export default {
 
 <style lang='scss'>
 #detail {
-    padding-left: 24rem;
-    padding-right: 24rem;
+    // padding-left: 24rem;
+    // padding-right: 24rem;
     .detail_header {
+        padding-left: 25px;
         padding-top: 3rem;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        margin-bottom: 23px;
         h1{
             width: 100%;
             text-align: left;
@@ -142,11 +144,14 @@ export default {
             height: 10rem;
         }
         .content{
-            padding: 0 1rem;
+            // padding: 0 1rem;
             .article-box{
                 padding: 1rem;
             }
         }
     }
+}
+.v-note-wrapper .v-note-panel .v-note-show .v-show-content, .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html{
+    background: rgba($color: #edeeea, $alpha: 0.6);
 }
 </style>

@@ -30,7 +30,7 @@
           v-model="ruleForm.email"
           style="margin-bottom: 10px"
         >
-          <template slot="append">.com</template>
+          <template slot="append">@qq.com</template>
         </el-input>
         <el-button
           style="padding: 10px 20px"
@@ -142,14 +142,18 @@ export default {
                     title: '正在注册您的账号请稍等...'
                 }) */
             try {
-              const res = await this.$api.Login(this.ruleForm);
+              const res = await this.$api.userLogin(this.ruleForm);
             //   console.log(res);
-              if (res.err == 0) {
+              if (res.code == 200) {
                 this.$message.success(
                   "注册成功啦小主人,3秒后为您跳转到首页(❤ ω ❤)!"
                 );
                 /* 保存token */
-                localStorage.setItem("username", res.token);
+                this.$store.commit('isLogin', true);
+                this.$store.commit('saveUser', res.data);
+                localStorage.setItem("loginStatus", true);
+                localStorage.setItem("user", JSON.stringify(res.data));
+                localStorage.setItem("token", res.token);
                 clearInterval(this.timer);
                 localStorage.removeItem(
                   "dlsjalkjdkljaslfjldjgltlfgdoeiroeiotgjfkdjk"
@@ -158,7 +162,7 @@ export default {
                   this.$router.back();
                 }, 1000);
               } else {
-                this.$message.error(res.message);
+                this.$message.error(res.msg);
               }
               /* this.$store.commit("LoadingTitleChange",{
                         isShow: false,
@@ -169,22 +173,26 @@ export default {
             }
           } else {
             /* 默认走登录模式 */
-            this.$store.commit("LoadingTitleChange", {
+/*             this.$store.commit("LoadingTitleChange", {
               isShow: true,
               title: "正在登录请稍等片刻...",
-            });
+            }); */
             try {
               const res = await this.$api.userLogin(this.ruleForm);
-              console.log(res);
+              // console.log(res);
               if (res.code == 200) {
                 this.$message.success("登录成功啦，马上带您去浏览我的小站！");
                 /* 保存token */
-                localStorage.setItem("username", res.token);
+                this.$store.commit('isLogin', true);
+                this.$store.commit('saveUser', res.data);
+                localStorage.setItem("loginStatus", true);
+                localStorage.setItem("user", JSON.stringify(res.data));
+                localStorage.setItem("token", res.token);
                 setTimeout(() => {
                   this.$router.back();
                 }, 1000);
               } else {
-                this.$message.error(res.data);
+                this.$message.error(res.msg);
               }
             } catch (error) {
               this.$message.error(error);
@@ -257,15 +265,17 @@ export default {
 
 <style lang='scss' scoped>
 #login {
-  width: 80%;
+  width: 96%;
+  margin: 0 auto;
+  margin-top: 12px;
   height: 80vh;
   margin: 0 auto;
-  margin-top: 4.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
   .demo-ruleForm {
-    width: 42%;
+    min-height: 620px;
+    width: 60%;
   }
   .logintitle {
     font-size: 2rem;
@@ -273,10 +283,10 @@ export default {
 }
 @media screen and (max-width:992px) {
   #login {
-    width: 95%;
-    margin-top: 2rem;
+    width: 100%;
     .demo-ruleForm {
-      width: 80%;
+      margin-top: 145px;
+      width: 85%;
     }
     .logintitle {
       font-size: 1.45rem;

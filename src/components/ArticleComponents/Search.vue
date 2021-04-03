@@ -1,12 +1,12 @@
 <template>
-  <div id="search" class="shadow">
-      <input v-model="searchValue" type="text">
-      <button @click="emitToLeft">search</button>
+  <div id="search">
+      <input v-model="searchValue" type="text" v-on:keyup.enter="emitToArticle" placeholder="输入关键词搜索...">
+      <i class="el-icon-search" @click="emitToArticle"></i>
   </div>
 </template>
 
 <script>
-import eventBus from '../../../utils/eventBus'
+import eventBus from '../../utils/eventBus'
 export default {
     data() {
         return {
@@ -25,7 +25,7 @@ export default {
             try {
                 const res = await this.$api.getSearch(this.searchValue)
                 if (res.code === 200) {
-                    this.$message.success("为您搜索到左边的内容~")
+                    this.$message.success("为您搜索到以下内容~")
                     this.searchValue = ''
                     this.searchList = res.data
                 } else {
@@ -35,9 +35,9 @@ export default {
                 this.$message.error(error)
             }
         },
-        async emitToLeft() {
+        async emitToArticle() {
             await this.searchLike()
-            eventBus.$emit('eventFromRight', {
+            eventBus.$emit('eventFromSearch', {
                 List: this.searchList,
                 count: this.searchList.length
             })
@@ -50,30 +50,25 @@ export default {
 .shadow {background-color: #FFFFFF;box-shadow: 0px 5px 40px -1px rgba(2, 10, 18, 0.1);}
 #search{
     display: flex;
-    width: 100%;
-    margin-bottom: 20px;
+    align-items: center;
+    position: relative;
+    width: 20%;
+    // margin-bottom: 20px;
     input{
-        width: 76%;
-        height: 2.25rem;
+        width: 100%;
+        height: 32px;
+        background-color: #fff;
         border: 1px solid #ccc;
-        border-right: none;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
+        border-radius: 20px;
         padding: 6px 0;
-        text-indent: 5px;
+        text-indent: 10px;
         outline: none;
     }
-    button{
+    i{
         cursor: pointer;
-        width: 24%;
-        border: 1px solid #ccc;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
-        background: deepskyblue;
-        color: white;
-        // height: 32px;
-        font-size: .875rem;
-        outline: none;
+        font-size: 20px;
+        position: absolute;
+        right: 16px;
     }
 }
 </style>

@@ -1,13 +1,11 @@
 <template>
   <div id="photos">
-      <header :style="{color: Color}"> 
-      当前位置: <router-link style="cursor:pointer" tag="span" to="/">首页</router-link> > 云相册
-      </header>
+        <h2 :style="{color: Color}">相册内容</h2>
         <div id="container">
           <div class="card" v-for="(item, index) in PhotoList" :key="index">
             <el-image :src="item.imgsrc[0]" @click="handleToDetail(item.pic_id)"></el-image>
-            <p>{{item.brief}}</p>
-            <p>{{item.create_time}}</p>
+            <h4 :style="{color: Color}">{{item.brief}}</h4>
+            <!-- <p>{{item.create_time}}</p> -->
           </div>
       </div>
   </div>
@@ -42,7 +40,7 @@ export default {
                 const res = await this.$api.getPhotos()
                 console.log(res)
                 if (res.code === 200) {
-                    this.$message.success("获取相册成功")
+                    // this.$message.success("获取相册成功")
                     res.data.map(item => {
                       item.imgsrc = JSON.parse(item.imgsrc)
                     })
@@ -65,47 +63,47 @@ export default {
 
 <style lang='scss' scoped>
 #photos {
-  width: 90%;
-  margin:2rem auto;
+  width: 96%;
+  margin: 0 auto;
+  margin-top: 12px;
+  border-radius: 4px;
+  // border: 1px solid #EBEEF5;
   position: relative;
-  z-index: 5;
+  // z-index: 5;
   transition: all 1s;
+  padding: 0 15px;
+  padding-top: 20px;
+  h2{
+    margin-left: 15px;
+    margin-bottom: 25px;
+  }
   #container {
     width: 100%;
-    columns: 5;
+    height: 100%;
+    column-count: 3;
     .card {
       width: 100%;
-      background: #f2f2f2;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid #ccc;
+      background: rgba($color: #fff, $alpha: 0.2);
+      // border: 1px solid #ccc;
+      border-radius: 4px;
       break-inside:avoid;
-      padding: 0.6rem;
-      margin-bottom: .8rem;
-    ::v-deep img {
-      max-width: 100%;
+      padding: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 5px 10px 3px #ccc;
+      ::v-deep img {
+      // max-width: 100%;
       cursor: pointer;
-    }
-    p:nth-child(2) {
-      color:orange;
-    }
-    p:nth-child(3) {
-      text-align: right;
-      color: lightgreen;
-    }
-    p:nth-child(3)::before {
-      content:'From--';
     }
   }
   }
   @media screen and (max-width: 1500px){
       #container {
-        columns:4 ;
+        columns:2 ;
       }
   }
     @media screen and (max-width: 1200px){
       #container {
-        columns:3 ;
+        columns:2 ;
       }
   }
     @media screen and (max-width: 900px){
@@ -114,11 +112,18 @@ export default {
       }
   }
   header {
-    padding-bottom: 2rem;
+    padding-bottom: 32px;
     position: relative;
     span:hover {
       color: lightblue;
     }
   }
 }
+@media screen and (max-width:992px) {
+  #photos{
+      width: 100%;
+      margin: 0;
+  }
+}
+
 </style>

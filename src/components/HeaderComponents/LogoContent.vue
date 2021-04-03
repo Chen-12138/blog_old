@@ -1,7 +1,7 @@
 <template>
   <div id="logocontent">
     <div class="logo_name">
-      <i class="menu iconfont icon-caidan"></i>
+      <i class="menu iconfont icon-caidan" @click="showNav"></i>
       <!-- <img v-show="$route.name !== 'home'" src="../../assets/images/logo.jpg" alt /> -->
       <p v-show="$route.name !== 'home'">Heartless</p>
       <i @click="$router.push('/category')" class="search iconfont icon-sousuo"></i>
@@ -9,8 +9,21 @@
   </div>
 </template>
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
-  name: "logo"
+  name: "logo",
+  data() {
+    return {
+      isShowNav: false
+    }
+  },
+  methods:{
+    showNav() {
+      const that = this
+      this.isShowNav = !this.isShowNav
+      eventBus.$emit('eventFromHeader', that.isShowNav)
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -19,8 +32,8 @@ export default {
   src: url("../../assets/font/Oh-Chewy-2.ttf");
 } */
 #logocontent {
-  height: 3.125rem;
-  line-height: 3.125rem;
+  width: 100%;
+  line-height: 52px;
   .logo_name {
     display: flex;
     justify-content: center;
@@ -29,27 +42,15 @@ export default {
     position: relative;
     user-select: none;
     p {
-      font-size: 1.6rem;
+      font-size: 24px;
       // margin-bottom: 2rem;
       font-weight: bold;
       color: #d4d4d4;
       animation: triggerColor 7s infinite alternate;
       font-family: "../../assets/font/Oh-Chewy-2.ttf";
     }
-    img {
-      width: 3.5rem;
-      height: 3.5rem;
-      margin-top: -2.2rem;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      opacity: .9;
-    }
   }
-  @media screen and(max-width:992px) {
+  @media screen and(max-width:1200px) {
     .menu,
     .search {
       color: black;

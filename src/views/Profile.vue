@@ -1,16 +1,16 @@
 <template>
   <div id="Info">
-      <div v-if="!username" style="text-align:center;padding-top:8rem;" :style="{color: Color}">
+      <div v-if="!token" style="text-align:center;padding-top:8rem;" :style="{color: Color}">
         糟糕，您还没有登陆检测不到信息! ~§(*￣▽￣*)§~
         <p>如果已登录，刷新页面即可看到个人信息~</p>
       </div>
-      <div v-if="username" class="SuccessInfo">
+      <div v-if="token" class="SuccessInfo">
           <h4 style="color:orange;margin-bottom:1rem;" :style="{color: Color}">下面这些就是您的个人信息啦(●ˇ∀ˇ●)~</h4>
           <img :src="MyInfo.avatar" alt="这是头像啦啦啦~">
           <el-upload
             v-show="flag"
             class="avatar-uploader"
-            action="http://localhost:3000/upload/headPortraitUpload"
+            :action="ImageUpload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
           >
@@ -35,7 +35,7 @@ export default {
     props: {},
     data () {
         return {
-            username: '',
+            token: '',
             MyInfo: {},
             flag: false,
             modal1:false,
@@ -43,30 +43,39 @@ export default {
         }
     },
     computed: {
+        ImageUpload() {
+            return `${this.$store.state.baseURL}/users/editAvatar`
+        },
         Color() {
             return this.$store.state.Color;
         }
     },
     mounted() {
+        // location.reload();
+        if(!localStorage.getItem('token')){
+            this.$router.push('/login')
+        } else {
+            this.token = localStorage.getItem('token')
+        }
         this.getInfo()
     },
     methods: {
         // 获取用户信息
         async getInfo() {
-            this.username = localStorage.getItem('username')
-            if(this.username) {
-                const res = await this.$api.getInfo(this.username)
-                console.log(res);
+            this.token = localStorage.getItem('token')
+            if(this.token) {
+                const res = await this.$api.getInfo(this.token)
+                // console.log(res);
                 if (res.code === 200) {
                     this.MyInfo = res.Info
-                } else if (res.code === 400) {
+                } else if (res.code === 401) {
                     this.$message.error('对不起，您的登录信息已过期，请重新登陆。')
-                    localStorage.removeItem('username')
+                    localStorage.clear()
                     setTimeout(() => {
                         location.reload()
                     })
                 } else {
-                    this.$message.error(res.message)
+                    this.$message.error(res.msg)
                 }
             }
         },
@@ -99,21 +108,25 @@ export default {
             /* 更改长度不能大于12 */
             if(this.MyInfo.name.length > 12) return this.$message.error('昵称长度不能大于12')
             const res = await this.$api.updateInfo({
-                token: this.username,
-                Info: this.MyInfo.info,
+                token: this.token,
+                introduction: this.MyInfo.introduction,
                 name: this.MyInfo.name,
-                Imgsrc: this.MyInfo.uploadimg
+                avatar: this.MyInfo.avatar
             })
-            if (res.err == 0) {
+            // console.log(res)
+            if (res.code == 200) {
                 this.flag = false
-                this.$message.success(res.message)
+                this.$store.commit('saveUser', res.data);
+                localStorage.setItem("user", JSON.stringify(res.data));
+                this.$message.success(res.msg)
             } else {
-                this.$message.error(res.message)
+                this.$message.error(res.msg)
             }
         },
         handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
-            this.MyInfo.uploadimg = file.response.url
+            // console.log(file)
+            this.imageUrl = file.response.file.url
+            this.MyInfo.avatar = file.response.file.url
         },
         /* beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
@@ -133,25 +146,33 @@ export default {
 
 <style lang='scss' scoped>
 #Info{
-    width: 70%;height: 28rem;
-    border-radius: 1rem;
-    margin: 6rem auto ;
+    height: 100%;
+    width: 96%;
+    margin: 0 auto;
+    margin-top: 12px;
     position: relative;
-    z-index: 5;
+    // z-index: 5;
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    // background-color: rgba($color: #f2f2f2, $alpha: 0.6);
     .SuccessInfo {
+        padding-top: 150px;
+        padding-left: 20px;
+        min-height: 700px;
         img {
-              width: 8rem;
-              height: 8rem;
+              width: 128px;
+              height: 128px;
               border-radius: 50%;
               box-shadow: 0 0 5px #ccc;
-              margin: 1rem 0 0 1rem;
+              margin: 16px 0 0 16px;
               position: relative;
               z-index: 3;
         }
         p{
             text-align: left;
-            font-size: 1.2rem;
-            margin:1rem;
+            font-size: 19.2px;
+            margin:8px;
             font-weight: bold;
             span {
             color: lightblue;
@@ -160,14 +181,18 @@ export default {
         }
         .name,
         .info {
+            font-size: 14px;
             border: 0;
             outline: none;
-            padding: 0.2rem;
+            padding: 3.2px;
             transition: all .5s;
             font-weight: bold;
-            border-radius: 0.2rem;
-            margin-left: 0.2rem;
+            border-radius: 3.2px;
+            margin-left: 3.2px;
+            margin-bottom: 6px;
+            height: 48px;
             background: #f2f2f2;
+            padding-left: 16px;
         }
         .info {
             width:80%;
@@ -178,12 +203,12 @@ export default {
         .editor_Info,
         .primary,
         .back_out {
-            margin:1rem;
+            margin:16px;
             position: relative;
             z-index: 3;
         }
         .back_out {
-            font-size:0.5rem;margin:0 0 1.5rem 2rem;
+            font-size:8px;margin:0 0 24px 32px;
         }
     }
 }

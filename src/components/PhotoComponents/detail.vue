@@ -1,14 +1,14 @@
 <template>
   <div id="photos">
-      <header :style="{color: Color}"> 
+      <!-- <header :style="{color: Color}"> 
       当前位置: <router-link style="cursor:pointer" tag="span" to="/">首页</router-link> > 云相册
-      </header>
-        <h2>相册内容</h2>
+      </header> -->
+        <h2 :style="{color: Color}">相册内容</h2>
         <div id="container">
           <div class="card" v-for="(item, index) in PhotoList" :key="index">
-            <el-image :src="item"></el-image>
-            <p>{{item.brief}}</p>
-            <p>{{item.create_time}}</p>
+            <el-image :src="item"  :preview-src-list="PhotoList"></el-image>
+            <p :style="{color: Color}">{{item.brief}}</p>
+            <p :style="{color: Color}">{{item.create_time}}</p>
           </div>
       </div>
   </div>
@@ -65,29 +65,35 @@ export default {
 
 <style lang='scss'>
 #photos {
-  width: 90%;
-  margin:2rem auto;
+  width: 96%;
+  margin: 0 auto;
+  margin-top: 12px;
+  border-radius: 4px;
+  // border: 1px solid #EBEEF5;
+  min-height: 95vh;
   position: relative;
-  z-index: 5;
+  // z-index: 5;
   transition: all 1s;
+  padding-top: 20px;
   h2{
-      margin-bottom: 2rem;
+    // margin-top: 20px;
+    margin-left: 15px;
+    margin-bottom: 25px;
   }
   #container {
     width: 100%;
-    columns: 5;
+    height: 100%;
+    column-count: 3;
     .card {
       width: 100%;
-      background: #f2f2f2;
+      background: rgba($color: #fff, $alpha: 0.2);
       overflow: hidden;
-      position: relative;
       border: 1px solid #ccc;
       break-inside:avoid;
-      padding: 0.6rem;
-      margin-bottom: .8rem;
-    img {
-      max-width: 100%;
-    }
+      border-radius: 4px;
+      padding: 9px;
+      box-shadow: 0 5px 10px 3px #ccc;
+      margin-bottom: 8px;
     p:nth-child(2) {
       color:orange;
     }
@@ -96,23 +102,23 @@ export default {
       color: lightgreen;
     }
     p:nth-child(3)::before {
-      content:'From--';
+      // content:'From--';
     }
   }
   }
   @media screen and (max-width: 1500px){
       #container {
-        columns:4 ;
+        column-count: 2;
       }
   }
     @media screen and (max-width: 1200px){
       #container {
-        columns:3 ;
+        column-count: 2;
       }
   }
     @media screen and (max-width: 900px){
       #container {
-        columns:2 ;
+        column-count: 2;
       }
   }
   header {

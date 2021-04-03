@@ -2,11 +2,11 @@
 <el-card class="box-card">
   <div slot="header" class="clearfix">
     <span><i class="iconfont icon-wenzhang"></i> 最近文章</span>
-    <el-button style="float: right; padding: 3px 0" type="text" @click="more">more</el-button>
+    <!-- <el-button style="float: right; padding: 3px 0" type="text" @click="more">more</el-button> -->
   </div>
   <div
     class="ItemList"
-    v-for="(item, index) in showList"
+    v-for="(item, index) in recentList"
     @click="handleToDetail(item.article_id)"
     :key="index"
     :title="item.title"
@@ -23,37 +23,48 @@
 </template>
 
 <script>
-import moment from "moment";
 export default {
     name: 'Recent',
-    props: {
-      recentList: {
-        type: Array,
-        default() {
-          return []
-        }
-      }
-    },
+    // props: {
+    //   recentList: {
+    //     type: Array,
+    //     default() {
+    //       return []
+    //     }
+    //   }
+    // },
     data() {
       return {
+        recentList: [],
         showList: []
       }
     },
     mounted() {
-      setTimeout(()=>{
-        this.some()
-      },200)
+      this.getRecent()
+      // setTimeout(()=>{
+      //   this.some()
+      // },200)
     },
     methods: {
+      // 获取最近文章
+      async getRecent() {
+          try {
+          const res = await this.$api.getRecentArticle()
+          // console.log(res)
+          this.recentList = res.data
+          } catch (error) {
+          this.$message.error(error)
+          }
+      },
       // 截取部分文章
-      some() {
-        // console.log(this.recentList)
-        var storeList = [...this.recentList];
-        this.showList = storeList.splice(0,6)
-      },
-      more() {
-        this.showList = this.recentList
-      },
+      // some() {
+      //   // console.log(this.recentList)
+      //   var storeList = [...this.recentList];
+      //   this.showList = storeList.splice(0,6)
+      // },
+      // more() {
+      //   this.showList = this.recentList
+      // },
       // 跳转详情页
       handleToDetail(article_id) {
         this.$router.push(`/detail/${article_id}`)
@@ -62,10 +73,11 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .box-card {
     width: 100%;
     margin-bottom: 1.25rem;
+    background-color: rgba($color: #f2f2f2, $alpha: 0.6);
     .ItemList {
       padding: 0.8rem 0.5rem;
       cursor: pointer;

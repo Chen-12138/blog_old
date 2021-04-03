@@ -25,54 +25,52 @@ export const getInfo = (username) => post('/users/getuserInfo', {token: username
  * @method 更新个人信息
  * @param  username
  */
-export const updateInfo = (params) => post('/users/primaryInfo', params)
+export const updateInfo = (params) => post('/users/editUser', params)
 
 /**
  * @method 获取文章
- * @param  page
  */ 
 export const getArticle = (page, pageSize) => get(`/article/getArticle?page=${page}&pageSize=${pageSize}`, {})
 
+/**
+ * @method 获取文章数量
+ * 
+ */
+export const getArticleCount = () => get('/article/getCount', {})
+
 /** 
  * @method 获取分类
- * @param  无
 */
 export const getCategory = () => get('/article/getCategory', {})
 
 /**
  * @method 获取标签
- * @param  无
  */
 export const getLabel = () => get('/article/getLable', {})
 
 /**
  * @method 获取最近发表的文章
- * @param  无
  */
 export const getRecentArticle = () => get('/article/getRecentArticle', {})
 
 /**
  * @method 搜索获取最近发表的文章
- * @param  value
  */
 export const getSearch = (keyword) => post('/article/articleSearch', {keyword})
 
 
 /**
  * @method 根据标签获取文章
- * @param  lable
  */
-export const getLableInfo = (params) => post('/article/getArticleByLabel', params)
+export const getLabelInfo = (params) => post('/article/getArticleByLabel', params)
 
 /**
  * @method 根据分类获取文章
- * @param  catogroy
  */
 export const getCategorynIfo = (params) => post('/article/getArticleByCategory', params)
 
 /**
  * @method 点赞
- * @param  lable
  */
 export const getLike = (params) => post('/note/notelike', params)
 
@@ -92,7 +90,6 @@ export const getPhotos = (page, pageSize) => get(`/photo/getPhoto?page=${page}&p
 
 /**
  * @method 获取评论
- * @param  
  */
 export const getComment = (page, pageSize) => get(`/message/getMessage?page=${page}&pageSize=${pageSize}`, {})
 
@@ -129,3 +126,8 @@ export const getArticleInfo = (id) => get(`/note/bynotetext/${id}`, {})
  * @method 获取Demo
  */
 export const getDemo = (page, pageSize) => get(`/video/getVideo?page=${page}&pageSize=${pageSize}`, {});
+
+/**
+ * @method 获取音乐
+ */
+export const getMusic = (id) => get(`/music/getMusic?id=${id}`, {});

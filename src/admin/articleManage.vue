@@ -39,7 +39,7 @@
             <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            @click="handleDelete(scope.row.article_id)">删除</el-button>
         </template>
         </el-table-column>
       </el-table>
@@ -78,8 +78,14 @@ export default {
           }
         })
       },
-      handleDelete(index, row) {
-        console.log(index, row);
+      async handleDelete(article_id) {
+        const res = await this.$api.deleteArticle(article_id);
+        if(res.code == 200) {
+          this.$message.success(res.msg)
+          location.reload();
+        } else {
+          this.$message.error(res.msg)
+        }
       },
       //换页
       PageChange(page) {

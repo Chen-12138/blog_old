@@ -10,27 +10,15 @@
           <el-button type="primary" @click="publish">发表</el-button>
       </div>
         <div class="leaveContent">
-            <!-- <div v-for="(item,index) in messageData" :key="index">
-                <div ref="contentItem" class="contentItem" :style="{color: Color}">
-                    <div class="head">
-                        <p v-show="publishURL == '/note/accessPulish'" class="number_id">{{index+1}} 楼</p>
-                        <p v-show="publishURL == '/message/leavemessage'" class="number_id">{{item.id}} 楼</p>
-                        <img style="width: 2rem;height: 2rem;border-radius: 50%;" :src="item.Imgsrc">
-                        <a>{{item.name}}<span v-show="item.username === 'Heartless'" class="chief">站长</span></a>
-                    </div>
-                    <span>{{item.value}}</span>
-                    <p>{{item.date | dateFilter}}</p>
-                    <p @click="SetReplyInfo(item, index)">回复</p>
-                </div>
-            </div> -->
             <div v-for="(item,index) in messageData" :key="item.id" class="Content">
                 <div class="contentItem">
                     <img :src="item.imgsrc" alt="用户头像">
                     <div class="info">
                         <div class="head">
-                            <span class="name">{{item.name}}<span v-show="item.name === '123456'" style="color: #2d8cf0">站长</span></span>
+                            <span class="name">{{item.name}}<span v-show="item.name === 'Heartless'" style="color: #2d8cf0">站长</span></span>
                             <div class="right">
-                                <span class="time" :style="{color: Color}">{{item.date | dateFilter}}</span>
+                                <span class="time" :style="{color: Color}">{{item.create_time | formateDateDetail}}</span>
+                                <!-- <span v-if="publishURL=='/article/leaveMessage'" class="number_id" :style="{color: Color}">{{index+1}} 楼</span> -->
                                 <span class="number_id" :style="{color: Color}">{{item.id}} 楼</span>
                             </div>
                         </div>
@@ -46,11 +34,12 @@
                     <div class="info">
                         <div class="head">
                             <div  class="left">
-                            <span class="name">{{replyItem.name}}<span v-show="replyItem.name === '123456'" style="color: #2d8cf0">站长</span></span>
-                            <span class="time">{{replyItem.date | dateFilter}}</span>
+                            <span class="name">{{replyItem.name}}<span v-show="replyItem.name === 'Heartless'" style="color: #2d8cf0">站长</span></span>
+                            <span class="time">{{replyItem.datetime | formateDateDetail}}</span>
                             </div>
                             <div class="right">
-                                <span class="number_id">{{replyItem.id}} 楼</span>
+                                <span class="number_id">{{j+1}} 楼</span>
+                                <!-- <span class="number_id">{{replyItem.id}} 楼</span> -->
                             </div>
                         </div>
                         <div class="content">
@@ -59,7 +48,7 @@
                                 <span class="name">@{{replyItem.reply_name}}</span>
                                 <span class="message">{{replyItem.content}}</span>
                             </div>
-                            <p class="reply" @click="SetPaddingReply(replyItem, item, j)">回复</p>
+                            <p class="reply" @click="SetPaddingReply(replyItem, item)">回复</p>
                         </div>
                     </div>
                 </div>
@@ -70,7 +59,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
     name: 'replyOrpublish',
     props:{
@@ -105,12 +93,7 @@ export default {
         }
     },
     mounted() {
-        // console.log(this.$route.params.id)
-    },
-    filters: {
-        dateFilter(val) {
-            return moment(val).format('YYYY-MM-DD HH:mm:ss')
-        }
+        
     },
     computed: {
         Color() {
@@ -130,15 +113,15 @@ export default {
         },
         // 发表
         async publish() {
-            if(localStorage.getItem("username")){
+            if(localStorage.getItem("token")){
                 if (this.value) {
-                    const username = localStorage.getItem('username')
+                    const token = localStorage.getItem('token')
                     /* detail start */
                     const article_id = this.$route.params.id
                     // let that = this
                     if (this.publishURL == '/article/leaveMessage') {
                         this.obj = {
-                            token: username,
+                            token: token,
                             article_id: article_id,
                             content: this.value
                         }
@@ -147,7 +130,7 @@ export default {
                     /* leave message start */
                     if (this.publishURL == '/message/leaveMessage') {
                         this.obj = {
-                            token:username,
+                            token:token,
                             content:this.value
                         }
                     }
@@ -158,25 +141,33 @@ export default {
                             this.$message.success(res.msg)
                             setTimeout(()=>{
                                 location.reload()
-                            }, 1000)
-                        } else {
+                            }, 500)
+                        } else if (res.code == 401){
                             this.$message.error(res.msg)
-                        }
+                            localStorage.removeItem('token');
+                            this.$router.push('/login')
+                        } else if (res.code == 400) {
+                            this.$message.error(res.msg)
+                        } 
                     } catch (error) {
                         this.$message.error(error)
                     }
                     
                 } else {
-                    this.$message.error(res.msg)
+                    this.$message.error("请输入内容~")
                 }
             } else {
+                this.$router.push('/login');
                 this.$message.error("请先去登陆再来留言哦,(ノへ￣、)！")
             }
         },
         // 回复留言
         async handleInputContent(value) {
-            const token = localStorage.getItem('username')
-            if (!token) return this.$message.error('您还没有登录呢！')
+            const token = localStorage.getItem('token')
+            if (!token){
+                this.$router.push('/login')
+                this.$message.error('您还没有登录呢！')
+            }
             try {
                 const res = await this.$api.reply(this.replyURL, {
                     message_id: this.message_id,
@@ -219,7 +210,7 @@ export default {
             });
         },
         // 回复留言的回复
-        async SetPaddingReply(selfItem, parentItem, index) {
+        async SetPaddingReply(selfItem, parentItem) {
             this.reply_id = selfItem.id;
             this.message_id = '';
             this.open()
@@ -236,7 +227,7 @@ export default {
         position: relative;
     }
     .compile {
-        margin:2rem;
+        margin:1.2rem;
         position: relative;
         z-index: 5;
     }
@@ -262,7 +253,7 @@ export default {
                     margin-bottom: 5px;
                     .name{
                         display: block;
-                        width: 100px;
+                        // width: 100px;
                         color: red;
                     }
                     .right{
@@ -289,7 +280,7 @@ export default {
             font-size: 13px;
             display: flex;
             margin-left: 28px;
-            background-color: #f2f2f2;
+            background-color:rgba($color: #f2f2f2, $alpha: 0.4);
             border-bottom: 1px solid #bbb9b9;
             padding: 5px;
             padding-right: 8px;

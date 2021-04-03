@@ -8,7 +8,10 @@
             :toolbarsFlag="toolbarsFlag"
             :subfield="subfield"
             :defaultOpen="defaultOpen"
-            style="min-height: 600px"
+            :ishljs="true"
+            codeStyle="rainbow"
+            previewBackground="background-color: rgba($color: #fff, $alpha: 0.6);"
+            style="min-height: 600px;"
         />
         <!-- <button @click="submit">提交</button> -->
     </div>
@@ -32,7 +35,11 @@ export default {
         toolbarsFlag: {
             type: Boolean,
             default: true
-        }
+        },
+        previewBackground: {
+            type: String,
+            default: '#fbfbfb'
+        },
     },
     // 注册
     components: {

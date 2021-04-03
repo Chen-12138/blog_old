@@ -32,3 +32,20 @@
 .box-card {
     width: 100%;
 }
+
+.el-menu{
+    border-right: none;
+}
+
+/* ::-webkit-scrollbar { 
+    width:10px;
+    background:#ccc; 
+    border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb{ 
+    display:block; 
+    width:6px; 
+    margin:0 auto; border-radius: 10px; 
+    background:#ccc;
+} */
